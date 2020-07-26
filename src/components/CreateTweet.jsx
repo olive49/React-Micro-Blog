@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import Card from "@material-ui/core/Card";
+import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 
 class CreateTweet extends Component {
@@ -33,22 +34,22 @@ class CreateTweet extends Component {
   render() {
     return (
       <div>
-        <Card className="Card">
-          <form onSubmit={(event) => this.handleOnSubmit(event)}>
-            <TextField
+        {/* <Card className="Card"> */}
+          <form onSubmit={(event) => this.handleOnSubmit(event)} className="form">
+            <input
               id="outlined-basic"
-              label="What you have in mind..."
-              multiline
-              rows={10}
-              variant="outlined"
+              className="text-field"
+              placeholder="What you have in mind..."
               value={this.state.newTweet}
               onChange={(event) => this.onChange(event)}
+              required
             />
-            <Button variant="contained" color="primary" type="submit" disabled={this.state.chars_left>this.state.max_chars}>
+            
+            <Button className="tweet-button" variant="contained" color="primary" type="submit" disabled={this.state.chars_left>this.state.max_chars}>
               Tweet
             </Button>
           </form>
-        </Card>
+        {/* </Card> */}
       </div>
     );
   }

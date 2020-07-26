@@ -1,12 +1,32 @@
 body {
   text-align: center;
+  background-color: black;
 }
 
 .App {
   margin: 2rem auto;
-  width: 40%;
+  width: 60%;
 }
 
 .Card {
   padding: 2rem;
+  background-color: black;
+}
+
+li {
+  list-style-type: none;
+}
+
+.text-field{
+  border: 0;
+  font-size: 2rem;
+  min-width: 25rem;
+  background-color: black;
+  color: white;
+  padding: 1rem;
+}
+
+.form {
+  border: 1px solid white;
+  padding: 1rem;
 }
