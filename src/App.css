@@ -1,0 +1,12 @@
+body {
+  text-align: center;
+}
+
+.App {
+  margin: 2rem auto;
+  width: 40%;
+}
+
+.Card {
+  padding: 2rem;
+}
