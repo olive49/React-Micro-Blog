@@ -1,6 +1,7 @@
 body {
   text-align: center;
   background-color: black;
+  color: white;
 }
 
 .App {
@@ -30,3 +31,7 @@ li {
   border: 1px solid white;
   padding: 1rem;
 }
+/* 
+.tweet-li {
+  color: white;
+} */

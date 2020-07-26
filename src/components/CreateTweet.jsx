@@ -27,6 +27,7 @@ class CreateTweet extends Component {
     this.props.onNewTweet({
       id: Date.now(),
       text: this.state.newTweet,
+      userName: "olive497",
     });
     this.setState({ newTweet: "" });
   }

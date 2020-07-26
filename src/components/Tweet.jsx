@@ -7,9 +7,10 @@ class Tweet extends Component {
   }
   render() {
       const {tweet} = this.props;
+      console.log(tweet)
     return (
       <div>
-        <li>{tweet.text}</li>
+        <li className="tweet-li">{tweet.userName}: {tweet.text}</li>
       </div>
     );
   }

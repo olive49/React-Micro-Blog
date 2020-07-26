@@ -25,11 +25,11 @@ class MainPage extends Component {
         this.state.storedTweets = JSON.parse(localStorage.getItem('tweet'))
         console.log(this.state.storedTweets)
   
-    //     if (localStorage.getItem('tweet')){
-    //         this.setState({
-    //             tweets: this.storedTweets
-    //         })
-    //     }
+        if (localStorage.getItem('tweet')){
+            this.setState({
+                tweets: this.state.storedTweets
+            })
+        }
     }
 
     render() { 
