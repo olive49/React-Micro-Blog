@@ -22,7 +22,7 @@ class CreateTweet extends Component {
   handleOnSubmit(event) {
     event.preventDefault();
     this.props.onNewTweet({
-      id: Date.now(),
+      id: new Date() + "",
       text: this.state.newTweet,
       userName: "olive497",
     });
@@ -33,8 +33,7 @@ class CreateTweet extends Component {
     return (
       <div>
           <form onSubmit={(event) => this.handleOnSubmit(event)} className="form">
-            <input
-              id="outlined-basic"
+            <textarea
               className="text-field"
               placeholder="What you have in mind..."
               value={this.state.newTweet}
@@ -42,9 +41,9 @@ class CreateTweet extends Component {
               required
             />
             
-            <Button className="tweet-button" variant="contained" color="primary" type="submit" disabled={this.state.chars_left>this.state.max_chars}>
+            <button className="tweet-button" type="submit" disabled={this.state.chars_left>this.state.max_chars}>
               Tweet
-            </Button>
+            </button>
           </form>
       </div>
     );

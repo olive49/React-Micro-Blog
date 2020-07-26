@@ -14,6 +14,9 @@ class MainPage extends Component {
   handleNewTweet(newTweet) {
     const tweets = this.state.tweets;
     tweets.unshift(newTweet);
+    setTweets(this.state).then((response)=>{
+        console.log(response)
+    })
     this.setState({
       tweets: tweets,
     });

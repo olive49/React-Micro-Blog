@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap");
+
 body {
   text-align: center;
   background-color: black;
@@ -6,7 +8,7 @@ body {
 
 .App {
   margin: 2rem auto;
-  width: 60%;
+  width: 40%;
 }
 
 .Card {
@@ -16,19 +18,52 @@ body {
 
 li {
   list-style-type: none;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.2rem;
 }
 
 .text-field{
-  border: 0;
-  font-size: 2rem;
-  min-width: 25rem;
+  font-size: 1.5rem;
   background-color: black;
   color: white;
   padding: 1rem;
+  min-width: 25rem;
+  min-height: 10rem;
+  resize: none;
+  border: 0;
+  font-family: 'Roboto', sans-serif;
+
+}
+
+.tweet-button {
+  background-color: #007BFF;
+  color: white;
+  font-size: 1.3rem;
+  border-radius: 5px;
+  border: 0;
+  padding: 0.5rem;
+  margin-right: 0;
+  margin-left: auto;
+  display: block;
+
 }
 
 .form {
   border: 1px solid white;
+  border-radius: 5px;
   padding: 1rem;
 }
 
+::placeholder {
+  color: white;
+  font-family: 'Roboto', sans-serif;
+}
+
+:focus {
+  outline: none;
+}
+
+.tweet-card-header {
+  color: #6C757D;
+  font-size: 1rem;
+}

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = "https://itc-bootcamp-19-dot-charcha-dev.appspot.com/"
+const baseUrl = "https://itc-bootcamp-19.ew.r.appspot.com/"
 
 // export function getTweets() {
 //     return axios.get()
@@ -9,6 +9,6 @@ const baseUrl = "https://itc-bootcamp-19-dot-charcha-dev.appspot.com/"
 // }
 
 export function setTweets(tweet){
-    return axios.post(`${baseUrl}/tweet,`, tweet)
+    return axios.post(`${baseUrl}tweet`, tweet)
 
 }
