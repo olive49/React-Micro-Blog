@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import CreateTweet from "./CreateTweet";
 import TweetList from "./TweetList";
+import { setTweets } from "../lib/api"
 
 class MainPage extends Component {
   constructor(props) {
