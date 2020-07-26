@@ -8,24 +8,26 @@ class CreateTweet extends Component {
     super(props);
     this.state = {
       newTweet: "",
+      chars_left: null,
+      max_chars: 140,
     };
   }
 
-
   onChange(event) {
+    const charCount = event.target.value.length;
     this.setState({
+      chars_left: charCount,
       newTweet: event.target.value,
     });
   }
 
   handleOnSubmit(event) {
-      event.preventDefault();
-      this.props.onNewTweet({
-          id: Date.now(),
-          text: this.state.newTweet
-      })
-      this.setState({ newTweet: "" })
-
+    event.preventDefault();
+    this.props.onNewTweet({
+      id: Date.now(),
+      text: this.state.newTweet,
+    });
+    this.setState({ newTweet: "" });
   }
 
   render() {
@@ -41,9 +43,8 @@ class CreateTweet extends Component {
               variant="outlined"
               value={this.state.newTweet}
               onChange={(event) => this.onChange(event)}
-              maxLength={140}
             />
-            <Button variant="contained" color="primary" type="submit">
+            <Button variant="contained" color="primary" type="submit" disabled={this.state.chars_left>this.state.max_chars}>
               Tweet
             </Button>
           </form>
