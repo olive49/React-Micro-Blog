@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import TextField from "@material-ui/core/TextField";
-import Card from "@material-ui/core/Card";
-import Grid from "@material-ui/core/Grid";
+// import TextField from "@material-ui/core/TextField";
+// import Card from "@material-ui/core/Card";
+// import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 
 class CreateTweet extends Component {
@@ -35,7 +35,6 @@ class CreateTweet extends Component {
   render() {
     return (
       <div>
-        {/* <Card className="Card"> */}
           <form onSubmit={(event) => this.handleOnSubmit(event)} className="form">
             <input
               id="outlined-basic"
@@ -50,7 +49,6 @@ class CreateTweet extends Component {
               Tweet
             </Button>
           </form>
-        {/* </Card> */}
       </div>
     );
   }

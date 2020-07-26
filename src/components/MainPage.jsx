@@ -1,49 +1,42 @@
-import React, { Component } from 'react';
-import CreateTweet from "./CreateTweet"
-import TweetList from "./TweetList"
+import React, { Component } from "react";
+import CreateTweet from "./CreateTweet";
+import TweetList from "./TweetList";
 
 class MainPage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            tweets: [],
-            storedTweets: "",
-        }
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      tweets: [],
+    };
+  }
 
-    handleNewTweet(newTweet){
-        console.log(newTweet);
-        this.setState((state) => {
-            return {
-                tweets: [newTweet, ...this.state.tweets]
-            }
-        })
-        localStorage.setItem('tweet', JSON.stringify(this.state.tweets))
-    }
+  handleNewTweet(newTweet) {
+    const tweets = this.state.tweets;
+    tweets.unshift(newTweet);
+    this.setState({
+      tweets: tweets,
+    });
+    localStorage.setItem("tweet", JSON.stringify(tweets));
+  }
 
-    componentDidMount () {
-        this.state.storedTweets = JSON.parse(localStorage.getItem('tweet'))
-        console.log(this.state.storedTweets)
-  
-        if (localStorage.getItem('tweet')){
-            this.setState({
-                tweets: this.state.storedTweets
-            })
-        }
+  componentDidMount() {
+    const getTweets = JSON.parse(localStorage.getItem("tweet"));
+    if (localStorage.getItem("tweet")) {
+      this.setState({
+        tweets: getTweets,
+      });
     }
+  }
 
-    render() { 
-        console.log(this.state.tweets)
-        return ( 
-        <div>
-            <CreateTweet
-            onNewTweet={(newTweet) => this.handleNewTweet(newTweet)}
-            />
-            <TweetList
-            tweets={this.state.tweets}
-            />
-        </div> );
-    }
+  render() {
+    console.log(this.state.tweets);
+    return (
+      <div>
+        <CreateTweet onNewTweet={(newTweet) => this.handleNewTweet(newTweet)} />
+        <TweetList tweets={this.state.tweets} />
+      </div>
+    );
+  }
 }
- 
+
 export default MainPage;
