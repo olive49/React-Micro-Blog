@@ -33,13 +33,11 @@ class MainPage extends Component {
     const response = await getTweets();
     const { data } = response;
     const { tweets } = data;
-    console.log(tweets);
     this.setState({ tweets, loading: false });
 
   }
 
   render() {
-    console.log(this.state.tweets);
     return (
       <div>
         <CreateTweet onNewTweet={(newTweet) => this.handleNewTweet(newTweet)}
