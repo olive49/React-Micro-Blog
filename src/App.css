@@ -23,13 +23,14 @@ li {
 }
 
 .text-field{
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   background-color: black;
   color: white;
   padding: 1rem;
-  min-width: 25rem;
+  min-width: 29rem;
   min-height: 10rem;
   resize: none;
+  /* border: 4px solid yellow; */
   border: 0;
   font-family: 'Roboto', sans-serif;
 
@@ -37,7 +38,6 @@ li {
 
 .tweet-button {
   background-color: #007BFF;
-  color: white;
   font-size: 1.3rem;
   border-radius: 5px;
   border: 0;
@@ -45,7 +45,6 @@ li {
   margin-right: 0;
   margin-left: auto;
   display: block;
-
 }
 
 .form {
@@ -66,4 +65,16 @@ li {
 .tweet-card-header {
   color: #6C757D;
   font-size: 1rem;
+}
+
+.tweet-error {
+  background-color: #F8D7DA;
+  color: #721C24;
+  border-radius: 5px;
+  padding: 0.5rem;
+
+}
+
+.card-footer {
+  display: flex;
 }

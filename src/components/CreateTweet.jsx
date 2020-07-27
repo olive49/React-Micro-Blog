@@ -40,10 +40,14 @@ class CreateTweet extends Component {
               onChange={(event) => this.onChange(event)}
               required
             />
-            
-            <button className="tweet-button" type="submit" disabled={this.state.chars_left>this.state.max_chars}>
+            <div className="card-footer">
+            <span className="tweet-error" style={{display: this.state.chars_left>this.state.max_chars ? 'inline-block' : 'none'}}>The tweet can't contain more than 140 chars.</span>
+            <button className="tweet-button"
+            style={{
+            color: this.state.chars_left>this.state.max_chars? "gray" : "white"}} type="submit" disabled={this.state.chars_left>this.state.max_chars}>
               Tweet
             </button>
+            </div>
           </form>
       </div>
     );

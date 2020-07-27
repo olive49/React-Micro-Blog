@@ -12,7 +12,6 @@ class Tweet extends Component {
   render() {
     const { tweet } = this.props;
     let dateObj = tweet.id
-    // console.log(dateObj.format("dddd, MMM DD at HH:mm a"));
     return (
       <div>
         <li className="tweet-li">
