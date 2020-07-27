@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import CreateTweet from "./CreateTweet";
 import TweetList from "./TweetList";
-import { setTweets } from "../lib/api"
+import { getTweets, setTweets } from "../lib/api"
 
 class MainPage extends Component {
   constructor(props) {
@@ -21,16 +21,21 @@ class MainPage extends Component {
     this.setState({
       tweets: tweets,
     });
-    localStorage.setItem("tweet", JSON.stringify(tweets));
+    // localStorage.setItem("tweet", JSON.stringify(tweets));
   }
 
   componentDidMount() {
-    const getTweets = JSON.parse(localStorage.getItem("tweet"));
-    if (localStorage.getItem("tweet")) {
-      this.setState({
-        tweets: getTweets,
-      });
-    }
+    getTweets().then(response => {
+      const { data } = response;
+      const { tweets } = data;
+      this.setState( { tweets })
+    })
+    // const getTweets = JSON.parse(localStorage.getItem("tweet"));
+    // if (localStorage.getItem("tweet")) {
+    //   this.setState({
+    //     tweets: getTweets,
+    //   });
+  // }
   }
 
   render() {
