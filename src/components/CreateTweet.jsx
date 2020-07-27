@@ -22,9 +22,10 @@ class CreateTweet extends Component {
   handleOnSubmit(event) {
     event.preventDefault();
     this.props.onNewTweet({
-      id: new Date() + "",
-      text: this.state.newTweet,
+      content: this.state.newTweet,
       userName: "olive497",
+      date: new Date().toISOString(),
+      id: Date.now(),
     });
     this.setState({ newTweet: "" });
   }

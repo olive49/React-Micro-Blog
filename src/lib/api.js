@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const baseUrl = "https://itc-bootcamp-19.ew.r.appspot.com/"
+const baseUrl = "https://fullstack-web-course.ew.r.appspot.com/"
+
 
 // export function getTweets() {
 //     return axios.get()

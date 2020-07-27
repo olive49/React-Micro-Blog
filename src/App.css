@@ -36,7 +36,7 @@ li {
 
 }
 
-.tweet-button {
+.tweet-button, .save-button {
   background-color: #007BFF;
   font-size: 1.3rem;
   border-radius: 5px;
@@ -45,6 +45,10 @@ li {
   margin-right: 0;
   margin-left: auto;
   display: block;
+}
+
+.save-button {
+  color: white;
 }
 
 .form {
@@ -77,4 +81,41 @@ li {
 
 .card-footer {
   display: flex;
+}
+
+.profile-form {
+  background-color: black;
+  color: white;
+  resize: none;
+  font-size: 1.2rem;
+  min-width: 15rem;
+}
+
+h4 {
+  border: 2px solid yellow;
+  margin-bottom: 0;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  border: 3px solid purple;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  flex-flow: row nowrap;
+  min-height: 10vh;
+  background-color: #343A40;
+  color: white;
+}
+
+.nav>li{
+  padding: 1rem;
+}
+
+.nav-bar {
+  width: 80%;
+  margin: 2rem auto;
 }

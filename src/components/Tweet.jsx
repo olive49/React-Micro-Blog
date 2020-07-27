@@ -19,7 +19,7 @@ class Tweet extends Component {
           backgroundColor: "#343A40", 
           color: "white" , minWidth: "23rem", marginLeft: "-3rem", marginTop: "2rem"}}>
             {/* <CardHeader> */}
-              <span className="tweet-card-header">{tweet.userName} {tweet.id} </span>
+              <span className="tweet-card-header">{tweet.userName} {tweet.date} </span>
             {/* </CardHeader> */}
             <CardContent>{tweet.text}</CardContent>
           </Card>
