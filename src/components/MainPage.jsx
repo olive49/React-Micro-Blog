@@ -3,7 +3,6 @@ import CreateTweet from "./CreateTweet";
 import TweetList from "./TweetList";
 import { getTweets, setTweets } from "../lib/api";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Profile from "./ProfilePage"
 
 class MainPage extends Component {
   constructor(props) {
