@@ -3,6 +3,7 @@ import CreateTweet from "./CreateTweet";
 import TweetList from "./TweetList";
 import { getTweets, setTweets } from "../lib/api";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Profile from "./ProfilePage"
 
 class MainPage extends Component {
   constructor(props) {
@@ -40,8 +41,10 @@ class MainPage extends Component {
   render() {
     return (
       <div>
+        <div>
         <CreateTweet onNewTweet={(newTweet) => this.handleNewTweet(newTweet)}
-        loading={this.state.loading} />
+        loading={this.state.loading}
+        userName={this.props.userName} />
         <div style={{display: this.state.loading ? "inline-block" : "none"}} className="loader">
           <CircularProgress />
         </div>
@@ -49,6 +52,9 @@ class MainPage extends Component {
           <h3 className="error">{this.state.errorMessage}</h3>
         }
         <TweetList tweets={this.state.tweets} />
+        </div>
+        <div>
+        </div>
       </div>
     );
   }

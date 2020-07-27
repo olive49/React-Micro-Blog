@@ -22,7 +22,7 @@ class CreateTweet extends Component {
     event.preventDefault();
     this.props.onNewTweet({
       content: this.state.newTweet,
-      userName: "Dwight Schrute",
+      userName: this.props.userName,
       date: new Date().toISOString(),
       id: Date.now(),
     });
@@ -30,7 +30,6 @@ class CreateTweet extends Component {
   }
 
   render() {
-    console.log(this.props.loading)
     return (
       <div>
           <form onSubmit={(event) => this.handleOnSubmit(event)} className="form">

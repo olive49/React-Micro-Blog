@@ -4,13 +4,8 @@ import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import Typography from "@material-ui/core/Typography";
 
-class Tweet extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  render() {
-    const { tweet } = this.props;
+const Tweet = (props) => {
+    const { tweet } = props;
     return (
       <div>
         <li className="tweet-li">
@@ -27,6 +22,6 @@ class Tweet extends Component {
       </div>
     );
   }
-}
+
 
 export default Tweet;
