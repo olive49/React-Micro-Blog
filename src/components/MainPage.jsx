@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import CreateTweet from "./CreateTweet";
 import TweetList from "./TweetList";
-import { getTweets, setTweets } from "../lib/api"
+import { getTweets, setTweets } from "../lib/api";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 class MainPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tweets: [],
+      loading: false,
     };
   }
 
@@ -15,11 +17,11 @@ class MainPage extends Component {
     const tweets = this.state.tweets;
     // tweets.unshift(newTweet);
     // console.log(newTweet)
-    setTweets(newTweet).then((response)=>{
-        const { data } = response;
-        const newTweets = [data, ...tweets]
-        this.setState({ tweets : newTweets })
-    })
+    setTweets(newTweet).then((response) => {
+      const { data } = response;
+      const newTweets = [data, ...tweets];
+      this.setState({ tweets: newTweets });
+    });
     // this.setState({
     //   tweets,
     // });
@@ -27,24 +29,37 @@ class MainPage extends Component {
   }
 
   componentDidMount() {
-    getTweets().then(response => {
-      const { data } = response;
-      const { tweets } = data;
-      this.setState( { tweets })
-    })
-    // const getTweets = JSON.parse(localStorage.getItem("tweet"));
-    // if (localStorage.getItem("tweet")) {
-    //   this.setState({
-    //     tweets: getTweets,
-    //   });
-  // }
+    this.fetchTweets().then();
+    // getTweets().then(response => {
+    //   const { data } = response;
+    //   const { tweets } = data;
+    //   this.setState( { tweets })
+    // })
   }
+
+  async fetchTweets() {
+    this.setState({ loading: true });
+    const response = await getTweets();
+    const { data } = response;
+    const { tweets } = data;
+    console.log(tweets);
+    this.setState({ tweets, loading: false });
+  }
+  // const getTweets = JSON.parse(localStorage.getItem("tweet"));
+  // if (localStorage.getItem("tweet")) {
+  //   this.setState({
+  //     tweets: getTweets,
+  //   });
+  // }
 
   render() {
     console.log(this.state.tweets);
     return (
       <div>
         <CreateTweet onNewTweet={(newTweet) => this.handleNewTweet(newTweet)} />
+        <div style={{display: this.state.loading ? "inline-block" : "none"}} className="loader">
+          <CircularProgress />
+        </div>
         <TweetList tweets={this.state.tweets} />
       </div>
     );
