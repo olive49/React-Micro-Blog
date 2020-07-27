@@ -23,7 +23,7 @@ class CreateTweet extends Component {
     event.preventDefault();
     this.props.onNewTweet({
       content: this.state.newTweet,
-      userName: "olive497",
+      userName: "Dwight Schrute",
       date: new Date().toISOString(),
       id: Date.now(),
     });

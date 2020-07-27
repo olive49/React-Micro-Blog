@@ -13,14 +13,16 @@ class MainPage extends Component {
 
   handleNewTweet(newTweet) {
     const tweets = this.state.tweets;
-    tweets.unshift(newTweet);
-    console.log(newTweet)
+    // tweets.unshift(newTweet);
+    // console.log(newTweet)
     setTweets(newTweet).then((response)=>{
-        console.log(response)
+        const { data } = response;
+        const newTweets = [data, ...tweets]
+        this.setState({ tweets : newTweets })
     })
-    this.setState({
-      tweets: tweets,
-    });
+    // this.setState({
+    //   tweets,
+    // });
     // localStorage.setItem("tweet", JSON.stringify(tweets));
   }
 
