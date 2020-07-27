@@ -9,10 +9,30 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: "Dwight Schrute",
+      userName: "",
     };
   }
+
+  handleNewUserName(newUserName) {
+    const userName = this.state.userName;
+    console.log(userName)
+    console.log(newUserName)
+    this.setState(state => { 
+      return { userName: newUserName }
+    });
+    localStorage.setItem("userName", JSON.stringify(newUserName));
+  }
+
+  componentDidMount() {
+    const getUserName = JSON.parse(localStorage.getItem("userName"));
+    console.log(getUserName);
+    this.setState(() => {
+      return  { userName: getUserName }
+  })
+}
+
   render() {
+    console.log(this.state.userName)
     return (
       <div>
         <Router>
@@ -21,10 +41,15 @@ class App extends Component {
             <Switch>
               <div className="App">
                 <Route path="/home" exact>
-                <MainPage userName={this.state.userName} />
+                  <MainPage userName={this.state.userName} />
                 </Route>
                 <Route path="/profile" exact>
-                <ProfilePage userName={this.state.userName} />
+                  <ProfilePage
+                    userName={this.state.userName}
+                    onChange={(e) => this.handleUserNameChange(e)}
+                    onSubmit={(e) => this.handleUserNameSubmit(e)}
+                    onNewUserName={(newUserName) => this.handleNewUserName(newUserName)}
+                  />
                 </Route>
               </div>
             </Switch>

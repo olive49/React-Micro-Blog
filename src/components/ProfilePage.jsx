@@ -1,18 +1,40 @@
 import React, { Component } from "react";
-import TextField from "@material-ui/core/TextField";
 
 class Profile extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            
-        }
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      itemChangeText: this.props.userName,
+    };
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+    this.props.onNewUserName(this.state.itemChangeText);
+  }
+
+  onChange(e) {
+    console.log(e);
+    this.setState({ itemChangeText: e.target.value });
+    console.log(this.state.itemChangeText)
+  }
+
   render() {
-      console.log(this.props)
+    console.log(this.props.userName);
     return (
-      <div>
-          <h2>Profile</h2>
+      <div className="profile">
+        <h2>Profile</h2>
+        <div className="user-input">
+          <span>UserName</span>
+          <form className="user-input" onSubmit={(e) => this.onSubmit(e)}>
+            <textarea
+              className="profile-input"
+              onChange={(e) => this.onChange(e)}
+              value={this.state.itemChangeText}
+            />
+            <button type="submit">Save</button>
+          </form>
+        </div>
       </div>
     );
   }
