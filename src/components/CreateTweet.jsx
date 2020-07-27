@@ -30,6 +30,7 @@ class CreateTweet extends Component {
   }
 
   render() {
+    console.log(this.props.loading)
     return (
       <div>
           <form onSubmit={(event) => this.handleOnSubmit(event)} className="form">
@@ -44,7 +45,7 @@ class CreateTweet extends Component {
             <span className="tweet-error" style={{display: this.state.chars_left>this.state.max_chars ? 'inline-block' : 'none'}}>The tweet can't contain more than 140 chars.</span>
             <button className="tweet-button"
             style={{
-            color: this.state.chars_left>this.state.max_chars? "gray" : "white"}} type="submit" disabled={this.state.chars_left>this.state.max_chars}>
+            color: this.state.chars_left>this.state.max_chars || this.props.loading ? "gray" : "white"}} type="submit" disabled={this.state.chars_left>this.state.max_chars || this.props.loading}>
               Tweet
             </button>
             </div>

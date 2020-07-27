@@ -10,31 +10,22 @@ class MainPage extends Component {
     this.state = {
       tweets: [],
       loading: false,
+      errorMessage: '',
     };
   }
 
   handleNewTweet(newTweet) {
     const tweets = this.state.tweets;
-    // tweets.unshift(newTweet);
-    // console.log(newTweet)
     setTweets(newTweet).then((response) => {
       const { data } = response;
-      const newTweets = [data, ...tweets];
-      this.setState({ tweets: newTweets });
-    });
-    // this.setState({
-    //   tweets,
-    // });
-    // localStorage.setItem("tweet", JSON.stringify(tweets));
+      const newTweets = [data, ...tweets]
+      this.setState({ tweets: newTweets })
+    })
+    .catch(err => {console.log(err)})
   }
 
   componentDidMount() {
-    this.fetchTweets().then();
-    // getTweets().then(response => {
-    //   const { data } = response;
-    //   const { tweets } = data;
-    //   this.setState( { tweets })
-    // })
+    this.fetchTweets().then()
   }
 
   async fetchTweets() {
@@ -44,19 +35,15 @@ class MainPage extends Component {
     const { tweets } = data;
     console.log(tweets);
     this.setState({ tweets, loading: false });
+
   }
-  // const getTweets = JSON.parse(localStorage.getItem("tweet"));
-  // if (localStorage.getItem("tweet")) {
-  //   this.setState({
-  //     tweets: getTweets,
-  //   });
-  // }
 
   render() {
     console.log(this.state.tweets);
     return (
       <div>
-        <CreateTweet onNewTweet={(newTweet) => this.handleNewTweet(newTweet)} />
+        <CreateTweet onNewTweet={(newTweet) => this.handleNewTweet(newTweet)}
+        loading={this.state.loading} />
         <div style={{display: this.state.loading ? "inline-block" : "none"}} className="loader">
           <CircularProgress />
         </div>

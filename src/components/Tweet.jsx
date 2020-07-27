@@ -11,7 +11,6 @@ class Tweet extends Component {
   }
   render() {
     const { tweet } = this.props;
-    let dateObj = tweet.id
     return (
       <div>
         <li className="tweet-li">
