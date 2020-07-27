@@ -21,7 +21,7 @@ class MainPage extends Component {
       const newTweets = [data, ...tweets]
       this.setState({ tweets: newTweets })
     })
-    .catch(err => {console.log(err)})
+    .catch(err => {this.setState({ errorMessage: err.message })})
   }
 
   componentDidMount() {
@@ -47,6 +47,9 @@ class MainPage extends Component {
         <div style={{display: this.state.loading ? "inline-block" : "none"}} className="loader">
           <CircularProgress />
         </div>
+        { this.state.errorMessage && 
+          <h3 className="error">{this.state.errorMessage}</h3>
+        }
         <TweetList tweets={this.state.tweets} />
       </div>
     );
