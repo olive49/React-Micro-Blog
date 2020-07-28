@@ -9,30 +9,34 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: "",
+      userName: "Dwight",
     };
   }
 
   handleNewUserName(newUserName) {
     const userName = this.state.userName;
-    console.log(userName)
-    console.log(newUserName)
-    this.setState(state => { 
-      return { userName: newUserName }
+    console.log(userName);
+    console.log(newUserName);
+    this.setState((state) => {
+      return { userName: newUserName };
     });
     localStorage.setItem("userName", JSON.stringify(newUserName));
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const getUserName = JSON.parse(localStorage.getItem("userName"));
     console.log(getUserName);
-    this.setState(() => {
-      return  { userName: getUserName }
-  })
-}
+    if (getUserName === null || undefined) {
+      console.log("empty");
+    } else {
+      this.setState(() => {
+        return { userName: getUserName };
+      });
+    }
+  }
 
   render() {
-    console.log(this.state.userName)
+    console.log(this.state.userName);
     return (
       <div>
         <Router>
@@ -48,7 +52,9 @@ class App extends Component {
                     userName={this.state.userName}
                     onChange={(e) => this.handleUserNameChange(e)}
                     onSubmit={(e) => this.handleUserNameSubmit(e)}
-                    onNewUserName={(newUserName) => this.handleNewUserName(newUserName)}
+                    onNewUserName={(newUserName) =>
+                      this.handleNewUserName(newUserName)
+                    }
                   />
                 </Route>
               </div>
