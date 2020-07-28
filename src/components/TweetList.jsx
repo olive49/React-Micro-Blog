@@ -7,7 +7,7 @@ const TweetList = (props) => {
   return (
         <div>
           <ul>
-            {Object.keys(tweets).map((tweet, index) => (
+            {tweets.map((tweet, index) => (
               <Tweet key={`${tweets.content}_${index}`} tweet={tweet} />
             ))}
           </ul>

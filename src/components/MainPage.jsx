@@ -28,40 +28,35 @@ class MainPage extends Component {
   }
 
   handleNewTweet(newTweet) {
-    const tweets = this.state.tweets
-    const newTweets = [newTweet, ...tweets]
-    // this.setState({ tweets: newTweets });
-    db.collection("tweets").add({
-      newTweet
-    })
-    .then((docRef) => {
-      console.log("Document was written with ID: ", docRef.id)
-    })
-    .catch((error) => {
-      console.error("Error adding document: ", error)
-    })
+    const tweets = this.state.tweets;
+    const newTweets = [newTweet, ...tweets];
+    this.setState({ tweets: newTweets });
+    db.collection("tweets")
+      .add({
+        newTweet,
+      })
+      .then((docRef) => {
+        console.log("Document was written with ID: ", docRef.id);
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error);
+      });
   }
 
-
-  componentDidMount(){
-    db.collection("tweets").get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data()}`)
-      })})}
-      // if (doc && doc.exts) {
-      // } else {
-      //   console.log("doesn't exist")
-    // }))
-    // const docRef = firestore.doc(`tweets/${tweetId}`);
-    // docRef.get().then((doc) => {
-    //   if (doc && doc.exists) {
-    //     const {tweets} = doc.data();
-    //     // this.updateState(tweets)
-    //   }
-    // }).catch((err) => {
-    //   console.log("Get error: ", err)
-    // })
-  
+  componentWillMount() {
+    const tweets = this.state.tweets
+    db.collection("tweets")
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          const { newTweet } = doc.data();
+          const newTweets = [newTweet, ...tweets]
+          this.setState(() => {
+            return { tweets: newTweets };
+        })
+      });
+  })
+}
 
   render() {
     return (
