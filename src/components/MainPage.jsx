@@ -15,7 +15,7 @@ var config = {
   messagingSenderId: "1031062562986",
 };
 firebase.initializeApp(config);
-var firestore = firebase.firestore();
+var db = firebase.firestore();
 
 class MainPage extends Component {
   constructor(props) {
@@ -24,32 +24,34 @@ class MainPage extends Component {
       tweets: [],
       loading: false,
       errorMessage: "",
-      tweetId: "",
     };
   }
 
   handleNewTweet(newTweet) {
-    const tweetId = this.state.tweetId
-    const newTweetId = newTweet.id
-    this.setState({ tweetId : newTweetId });
-    const docRef = firestore.doc(`tweets/${newTweetId}`);
-    const tweets = this.state.tweets;
-    docRef
-      .set({
-        tweets: newTweet,
-      })
-      .then(() => {
-        console.log("firestore success");
-      })
-      .catch((err) => {
-        console.log("Got error: ", err);
-      });
+    const tweets = this.state.tweets
+    const newTweets = [newTweet, ...tweets]
+    // this.setState({ tweets: newTweets });
+    db.collection("tweets").add({
+      newTweet
+    })
+    .then((docRef) => {
+      console.log("Document was written with ID: ", docRef.id)
+    })
+    .catch((error) => {
+      console.error("Error adding document: ", error)
+    })
   }
 
 
   componentDidMount(){
-    const tweetId = this.state.tweetId
-    console.log(tweetId);
+    db.collection("tweets").get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log(`${doc.id} => ${doc.data()}`)
+      })})}
+      // if (doc && doc.exts) {
+      // } else {
+      //   console.log("doesn't exist")
+    // }))
     // const docRef = firestore.doc(`tweets/${tweetId}`);
     // docRef.get().then((doc) => {
     //   if (doc && doc.exists) {
@@ -59,13 +61,7 @@ class MainPage extends Component {
     // }).catch((err) => {
     //   console.log("Get error: ", err)
     // })
-  }
-
-  // updateState(newTweets){
-  //   const tweets = this.state.tweets
-  //   console.log(newTweets)
-  //   this.setState({ tweets: newTweets })
-  // }
+  
 
   render() {
     return (
