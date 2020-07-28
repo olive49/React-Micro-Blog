@@ -63,14 +63,14 @@ class CreateTweet extends Component {
                   style={{
                     color:
                       this.state.chars_left > this.state.max_chars ||
-                      this.props.loading
+                      context.loading
                         ? "gray"
                         : "white",
                   }}
                   type="submit"
                   disabled={
                     this.state.chars_left > this.state.max_chars ||
-                    this.props.loading
+                    context.loading
                   }
                 >
                   Tweet

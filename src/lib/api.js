@@ -11,6 +11,6 @@ export function getTweetById(tweetId) {
     return axios.get(`${baseUrl}/tweet/${tweetId}`)
 }
 
-export function setTweets(tweet){
+export function createTweets(tweet){
     return axios.post(`${baseUrl}/tweet`, tweet)
 }

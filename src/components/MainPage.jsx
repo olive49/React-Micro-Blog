@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import CreateTweet from "./CreateTweet";
 import TweetList from "./TweetList";
-import { getTweets, setTweets } from "../lib/api";
+import { getTweets, createTweets } from "../lib/api";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import TweetsContext from "../TweetsContext.js";
 
@@ -10,14 +10,14 @@ class MainPage extends Component {
     super(props);
     this.state = {
       tweets: [],
-      loading: false,
+      // loading: false,
       errorMessage: "",
     };
   }
 
   handleNewTweet(newTweet) {
     const tweets = this.state.tweets;
-    setTweets(newTweet)
+    createTweets(newTweet)
       .then((response) => {
         const { data } = response;
         const newTweets = [data, ...tweets];

@@ -5,8 +5,6 @@ import TweetsContext from "../TweetsContext.js";
 const TweetList = (props) => {
   const { tweets } = props;
   return (
-    <TweetsContext>
-      {(context) => (
         <div>
           <ul>
             {tweets.map((tweet, index) => (
@@ -14,8 +12,6 @@ const TweetList = (props) => {
             ))}
           </ul>
         </div>
-      )}
-    </TweetsContext>
   );
 };
 

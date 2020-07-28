@@ -38,7 +38,9 @@ class App extends Component {
 
   render() {
     return (
-      <TweetsContext.Provider value={{ userName: this.state.userName }}>
+      <TweetsContext.Provider 
+      value={{ userName: this.state.userName,
+      loading: false }}>
       <div>
         <Router>
           <div>

@@ -3,13 +3,10 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import Typography from "@material-ui/core/Typography";
-import TweetsContext from "../TweetsContext.js";
 
 const Tweet = (props) => {
   const { tweet } = props;
   return (
-    <TweetsContext>
-      {(context) => (
         <div>
           <li className="tweet-li">
             <Card
@@ -29,8 +26,6 @@ const Tweet = (props) => {
             </Card>
           </li>
         </div>
-      )}
-    </TweetsContext>
   );
 };
 
