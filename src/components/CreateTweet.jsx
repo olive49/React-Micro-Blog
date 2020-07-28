@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import UserNameContext from "../UserNameContext.js";
+import TweetsContext from "../TweetsContext.js";
 
 class CreateTweet extends Component {
   constructor(props) {
@@ -32,8 +32,8 @@ class CreateTweet extends Component {
 
   render() {
     return (
-      <UserNameContext>
-        {(context) => (
+      <TweetsContext>
+        {(context) => 
           <div>
             <form
               onSubmit={(event) => this.handleOnSubmit(event)}
@@ -78,8 +78,8 @@ class CreateTweet extends Component {
               </div>
             </form>
           </div>
-        )}
-      </UserNameContext>
+        }
+      </TweetsContext>
     );
   }
 }

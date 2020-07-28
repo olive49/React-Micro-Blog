@@ -3,7 +3,7 @@ import CreateTweet from "./CreateTweet";
 import TweetList from "./TweetList";
 import { getTweets, setTweets } from "../lib/api";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import UserNameContext from "../UserNameContext.js";
+import TweetsContext from "../TweetsContext.js";
 
 class MainPage extends Component {
   constructor(props) {
@@ -42,8 +42,8 @@ class MainPage extends Component {
 
   render() {
     return (
-      <UserNameContext>
-        {(context) => (
+      <TweetsContext>
+        {(context) => 
           <div>
             <div>
               <CreateTweet
@@ -66,8 +66,8 @@ class MainPage extends Component {
             </div>
             <div></div>
           </div>
-        )}
-      </UserNameContext>
+        }
+      </TweetsContext>
     );
   }
 }
