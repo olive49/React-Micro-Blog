@@ -6,6 +6,7 @@ import NavBar from "./components/NavBar.jsx";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import TweetsContext from "./TweetsContext"
 
+
 class App extends Component {
   constructor(props) {
     super(props);

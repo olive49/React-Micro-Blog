@@ -1,9 +1,21 @@
 import React, { Component } from "react";
 import CreateTweet from "./CreateTweet";
 import TweetList from "./TweetList";
-import { getTweets, createTweets } from "../lib/api";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import TweetsContext from "../TweetsContext.js";
+
+const firebase = require("firebase");
+require("firebase/firestore");
+
+var config = {
+  authDomain: "react-micro-blogging-62443.firebaseapp.com",
+  databaseURL:
+    "https://react-micro-blogging-62443.firebaseio.com/users/JwReLLgK2GWuyg6Z7Gpy",
+  projectId: "react-micro-blogging-62443",
+  messagingSenderId: "1031062562986",
+};
+firebase.initializeApp(config);
+var firestore = firebase.firestore();
 
 class MainPage extends Component {
   constructor(props) {
@@ -12,41 +24,53 @@ class MainPage extends Component {
       tweets: [],
       loading: false,
       errorMessage: "",
+      tweetId: "",
     };
   }
 
   handleNewTweet(newTweet) {
+    const tweetId = this.state.tweetId
+    const newTweetId = newTweet.id
+    this.setState({ tweetId : newTweetId });
+    const docRef = firestore.doc(`tweets/${newTweetId}`);
     const tweets = this.state.tweets;
-    createTweets(newTweet)
-      .then((response) => {
-        const { data } = response;
-        const newTweets = [data, ...tweets];
-        this.setState({ tweets: newTweets });
+    docRef
+      .set({
+        tweets: newTweet,
+      })
+      .then(() => {
+        console.log("firestore success");
       })
       .catch((err) => {
-        this.setState({ errorMessage: err.message });
+        console.log("Got error: ", err);
       });
   }
 
-  componentDidMount() {
-    this.fetchTweets().then();
-    setInterval(() => this.fetchTweets(), 50000)
+
+  componentDidMount(){
+    const tweetId = this.state.tweetId
+    console.log(tweetId);
+    // const docRef = firestore.doc(`tweets/${tweetId}`);
+    // docRef.get().then((doc) => {
+    //   if (doc && doc.exists) {
+    //     const {tweets} = doc.data();
+    //     // this.updateState(tweets)
+    //   }
+    // }).catch((err) => {
+    //   console.log("Get error: ", err)
+    // })
   }
 
-  async fetchTweets() {
-    this.setState({ loading: true });
-    const response = await getTweets();
-    const { data } = response;
-    const { tweets } = data;
-    this.setState({ tweets, loading: false });
-  }
-
-
+  // updateState(newTweets){
+  //   const tweets = this.state.tweets
+  //   console.log(newTweets)
+  //   this.setState({ tweets: newTweets })
+  // }
 
   render() {
     return (
       <TweetsContext>
-        {(context) => 
+        {(context) => (
           <div>
             <div>
               <CreateTweet
@@ -69,7 +93,7 @@ class MainPage extends Component {
             </div>
             <div></div>
           </div>
-        }
+        )}
       </TweetsContext>
     );
   }

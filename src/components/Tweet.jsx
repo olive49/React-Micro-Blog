@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 
 const Tweet = (props) => {
   const { tweet } = props;
+  console.log(tweet)
   return (
         <div>
           <li className="tweet-li">
