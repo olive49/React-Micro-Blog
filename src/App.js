@@ -4,6 +4,7 @@ import MainPage from "./components/MainPage.jsx";
 import ProfilePage from "./components/ProfilePage.jsx";
 import NavBar from "./components/NavBar.jsx";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import UserNameContext from "../src/UserNameContext"
 
 class App extends Component {
   constructor(props) {
@@ -38,6 +39,7 @@ class App extends Component {
   render() {
     console.log(this.state.userName);
     return (
+      <UserNameContext.Provider value={{ userName: this.state.userName }}>
       <div>
         <Router>
           <div>
@@ -62,6 +64,7 @@ class App extends Component {
           </div>
         </Router>
       </div>
+      </UserNameContext.Provider>
     );
   }
 }

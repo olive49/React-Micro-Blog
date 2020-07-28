@@ -3,6 +3,7 @@ import CreateTweet from "./CreateTweet";
 import TweetList from "./TweetList";
 import { getTweets, setTweets } from "../lib/api";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import UserNameContext from "../UserNameContext.js";
 
 class MainPage extends Component {
   constructor(props) {
@@ -10,22 +11,25 @@ class MainPage extends Component {
     this.state = {
       tweets: [],
       loading: false,
-      errorMessage: '',
+      errorMessage: "",
     };
   }
 
   handleNewTweet(newTweet) {
     const tweets = this.state.tweets;
-    setTweets(newTweet).then((response) => {
-      const { data } = response;
-      const newTweets = [data, ...tweets]
-      this.setState({ tweets: newTweets })
-    })
-    .catch(err => {this.setState({ errorMessage: err.message })})
+    setTweets(newTweet)
+      .then((response) => {
+        const { data } = response;
+        const newTweets = [data, ...tweets];
+        this.setState({ tweets: newTweets });
+      })
+      .catch((err) => {
+        this.setState({ errorMessage: err.message });
+      });
   }
 
   componentDidMount() {
-    this.fetchTweets().then()
+    this.fetchTweets().then();
   }
 
   async fetchTweets() {
@@ -34,27 +38,36 @@ class MainPage extends Component {
     const { data } = response;
     const { tweets } = data;
     this.setState({ tweets, loading: false });
-
   }
 
   render() {
     return (
-      <div>
-        <div>
-        <CreateTweet onNewTweet={(newTweet) => this.handleNewTweet(newTweet)}
-        loading={this.state.loading}
-        userName={this.props.userName} />
-        <div style={{display: this.state.loading ? "inline-block" : "none"}} className="loader">
-          <CircularProgress />
-        </div>
-        { this.state.errorMessage && 
-          <h3 className="error">{this.state.errorMessage}</h3>
-        }
-        <TweetList tweets={this.state.tweets} />
-        </div>
-        <div>
-        </div>
-      </div>
+      <UserNameContext>
+        {(context) => (
+          <div>
+            <div>
+              <CreateTweet
+                onNewTweet={(newTweet) => this.handleNewTweet(newTweet)}
+                loading={this.state.loading}
+                userName={context.userName}
+              />
+              <div
+                style={{
+                  display: this.state.loading ? "inline-block" : "none",
+                }}
+                className="loader"
+              >
+                <CircularProgress />
+              </div>
+              {this.state.errorMessage && (
+                <h3 className="error">{this.state.errorMessage}</h3>
+              )}
+              <TweetList tweets={this.state.tweets} />
+            </div>
+            <div></div>
+          </div>
+        )}
+      </UserNameContext>
     );
   }
 }

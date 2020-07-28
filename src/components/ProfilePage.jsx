@@ -1,10 +1,13 @@
 import React, { Component } from "react";
+import UserNameContext from "../UserNameContext.js";
 
 class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // itemChangeText: this.props.userName,
       itemChangeText: this.props.userName,
+
     };
   }
 
@@ -16,26 +19,30 @@ class Profile extends Component {
   onChange(e) {
     console.log(e);
     this.setState({ itemChangeText: e.target.value });
-    console.log(this.state.itemChangeText)
+    console.log(this.state.itemChangeText);
   }
 
   render() {
-    console.log(this.props.userName);
+    // console.log(this.props.userName);
     return (
-      <div className="profile">
-        <h2>Profile</h2>
-        <div className="user-input">
-          <span>UserName</span>
-          <form className="user-input" onSubmit={(e) => this.onSubmit(e)}>
-            <textarea
-              className="profile-input"
-              onChange={(e) => this.onChange(e)}
-              value={this.state.itemChangeText}
-            />
-            <button type="submit">Save</button>
-          </form>
+      <UserNameContext.Consumer>
+      {(context) => 
+        <div className="profile">
+          <h2>Profile</h2>
+          <div className="user-input">
+            <span>UserName</span>
+            <form className="user-input" onSubmit={(e) => this.onSubmit(e)}>
+              <textarea
+                className="profile-input"
+                onChange={(e) => this.onChange(e)}
+                value={this.state.itemChangeText}
+              />
+              <button type="submit">Save</button>
+            </form>
+          </div>
         </div>
-      </div>
+        }
+      </UserNameContext.Consumer>
     );
   }
 }
