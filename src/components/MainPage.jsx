@@ -10,7 +10,7 @@ class MainPage extends Component {
     super(props);
     this.state = {
       tweets: [],
-      // loading: false,
+      loading: false,
       errorMessage: "",
     };
   }
@@ -30,6 +30,7 @@ class MainPage extends Component {
 
   componentDidMount() {
     this.fetchTweets().then();
+    setInterval(() => this.fetchTweets(), 50000)
   }
 
   async fetchTweets() {
@@ -39,6 +40,8 @@ class MainPage extends Component {
     const { tweets } = data;
     this.setState({ tweets, loading: false });
   }
+
+
 
   render() {
     return (
