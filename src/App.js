@@ -5,7 +5,7 @@ import ProfilePage from "./components/ProfilePage.jsx";
 import NavBar from "./components/NavBar.jsx";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import TweetsContext from "./TweetsContext"
-
+import SignUp from "./components/SignUp.jsx"
 
 class App extends Component {
   constructor(props) {
@@ -62,6 +62,13 @@ class App extends Component {
                       this.handleNewUserName(newUserName)
                     }
                   />
+                </Route>
+                <Route path="/signup" exact>
+                  <SignUp
+                  
+                  />
+
+
                 </Route>
               </div>
             </Switch>

@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Link, withRouter } from "react-router-dom";
+
 
 class Profile extends Component {
   constructor(props) {
@@ -16,14 +18,14 @@ class Profile extends Component {
   onChange(e) {
     console.log(e);
     this.setState({ itemChangeText: e.target.value });
-    console.log(this.state.itemChangeText)
+    console.log(this.state.itemChangeText);
   }
 
   render() {
     console.log(this.props.userName);
     return (
       <div className="profile">
-        <h2>Profile</h2>
+        <h2>Login</h2>
         <div className="user-input">
           <span>UserName</span>
           <form className="user-input" onSubmit={(e) => this.onSubmit(e)}>
@@ -32,8 +34,22 @@ class Profile extends Component {
               onChange={(e) => this.onChange(e)}
               value={this.state.itemChangeText}
             />
-            <button type="submit">Save</button>
+            <span className="password">Password</span>
+            <textarea
+              className="profile-input"
+              onChange={(e) => this.onChange(e)}
+              value={this.state.itemChangeText}
+            />
+            <button type="submit">Sign In</button>
           </form>
+          <span>
+            Don't have an account?
+            <button>
+              <Link to="/signup">
+              Sign Up
+              </Link>
+            </button>
+          </span>
         </div>
       </div>
     );
