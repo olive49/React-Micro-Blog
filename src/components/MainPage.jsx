@@ -28,9 +28,6 @@ class MainPage extends Component {
   }
 
   handleNewTweet(newTweet) {
-    // const tweets = this.state.tweets;
-    // const newTweets = [newTweet, ...tweets];
-    // this.setState({ tweets: newTweets });
     db.collection("tweets")
       .add({
         newTweet,
