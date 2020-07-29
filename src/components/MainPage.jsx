@@ -8,6 +8,10 @@ const firebase = require("firebase");
 require("firebase/firestore");
 
 var config = {
+<<<<<<< HEAD
+=======
+  apiKey: process.env.REACT_APP_FIRESTORE_API_KEY,
+>>>>>>> 178c867... hid api key
   authDomain: "react-micro-blogging-62443.firebaseapp.com",
   databaseURL:
     "https://react-micro-blogging-62443.firebaseio.com/users/JwReLLgK2GWuyg6Z7Gpy",
@@ -28,6 +32,9 @@ class MainPage extends Component {
   }
 
   handleNewTweet(newTweet) {
+    const tweets = this.state.tweets
+    const newTweets = [newTweet, ...tweets]
+    this.setState({ tweets: newTweets });
     db.collection("tweets")
       .add({
         newTweet,

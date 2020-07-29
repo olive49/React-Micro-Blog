@@ -7,12 +7,14 @@ class Profile extends Component {
     super(props);
     this.state = {
       itemChangeText: this.props.userName,
+      users: this.props.Users,
     };
   }
 
   onSubmit(e) {
     e.preventDefault();
     this.props.onNewUserName(this.state.itemChangeText);
+
   }
 
   onChange(e) {

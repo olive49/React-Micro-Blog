@@ -1,19 +1,18 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-// import { withRouter } from "react-router-dom";
 
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: "home",
+      page: "/home",
     };
   }
 
   changePage = (newPage) => {
-    console.log(newPage);
     this.setState({ page: newPage });
   };
+
 
   componentDidMount() {
     this.props.history.listen(() => {

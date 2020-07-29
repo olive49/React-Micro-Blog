@@ -12,13 +12,12 @@ class App extends Component {
     super(props);
     this.state = {
       userName: "Dwight",
+      users: []
     };
   }
 
   handleNewUserName(newUserName) {
     const userName = this.state.userName;
-    console.log(userName);
-    console.log(newUserName);
     this.setState((state) => {
       return { userName: newUserName };
     });
@@ -27,23 +26,25 @@ class App extends Component {
 
   componentWillMount() {
     const getUserName = JSON.parse(localStorage.getItem("userName"));
-    console.log(getUserName);
-    if (getUserName === null || undefined) {
+    if (!getUserName) {
       console.log("empty");
     } else {
-      this.setState(() => {
-        return { userName: getUserName };
-      });
+      this.setState( { userName: getUserName }
+      );
     }
   }
 
   
 
   render() {
+    const { userName, users, } = this.state
+    const { handleUserNameChange, handleUserNameSubmit, handleNewUserName } = this
     return (
       <TweetsContext.Provider 
       value={{ userName: this.state.userName,
-      }}>
+      }}
+      users={this.state.users}
+      >
       <div>
         <Router>
           <div>
@@ -51,15 +52,16 @@ class App extends Component {
             <Switch>
               <div className="App">
                 <Route path="/home" exact>
-                  <MainPage userName={this.state.userName} />
+                  <MainPage userName={userName} />
                 </Route>
                 <Route path="/profile" exact>
                   <ProfilePage
-                    userName={this.state.userName}
-                    onChange={(e) => this.handleUserNameChange(e)}
-                    onSubmit={(e) => this.handleUserNameSubmit(e)}
+                    users={users}
+                    userName={userName}
+                    onChange={(e) => handleUserNameChange(e)}
+                    onSubmit={(e) => handleUserNameSubmit(e)}
                     onNewUserName={(newUserName) =>
-                      this.handleNewUserName(newUserName)
+                      handleNewUserName(newUserName)
                     }
                   />
                 </Route>
