@@ -28,9 +28,9 @@ class MainPage extends Component {
   }
 
   handleNewTweet(newTweet) {
-    const tweets = this.state.tweets;
-    const newTweets = [newTweet, ...tweets];
-    this.setState({ tweets: newTweets });
+    // const tweets = this.state.tweets;
+    // const newTweets = [newTweet, ...tweets];
+    // this.setState({ tweets: newTweets });
     db.collection("tweets")
       .add({
         newTweet,
@@ -45,16 +45,20 @@ class MainPage extends Component {
 
   componentWillMount() {
     const tweets = this.state.tweets
+    const tweetsArray = []
     db.collection("tweets")
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           const { newTweet } = doc.data();
-          const newTweets = [newTweet, ...tweets]
-          this.setState(() => {
-            return { tweets: newTweets };
+          tweetsArray.push(newTweet);
         })
+        this.setState((state) => {
+          return { tweets: tweetsArray };
       });
+  })
+  .catch((error) => {
+    console.log("Error: ", error)
   })
 }
 

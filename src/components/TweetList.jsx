@@ -3,7 +3,6 @@ import Tweet from "./Tweet.jsx";
 
 const TweetList = (props) => {
   const { tweets } = props;
-  console.log(tweets)
   return (
         <div>
           <ul>
