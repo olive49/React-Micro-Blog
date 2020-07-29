@@ -6,15 +6,12 @@ class CreateTweet extends Component {
     super(props);
     this.state = {
       newTweet: "",
-      chars_left: null,
       max_chars: 140,
     };
   }
 
   onChange(event) {
-    const charCount = event.target.value.length;
     this.setState({
-      chars_left: charCount,
       newTweet: event.target.value,
     });
   }
@@ -32,7 +29,7 @@ class CreateTweet extends Component {
 
   render() {
     return (
-      <TweetsContext>
+      <TweetsContext.Consumer>
         {(context) => 
           <div>
             <form
@@ -51,7 +48,7 @@ class CreateTweet extends Component {
                   className="tweet-error"
                   style={{
                     display:
-                      this.state.chars_left > this.state.max_chars
+                      this.state.newTweet.length > this.state.max_chars
                         ? "inline-block"
                         : "none",
                   }}
@@ -62,15 +59,15 @@ class CreateTweet extends Component {
                   className="tweet-button"
                   style={{
                     color:
-                      this.state.chars_left > this.state.max_chars ||
-                      context.loading
+                      this.state.newTweet.length > this.state.max_chars ||
+                      this.props.loading
                         ? "gray"
                         : "white",
                   }}
                   type="submit"
                   disabled={
-                    this.state.chars_left > this.state.max_chars ||
-                    context.loading
+                    this.state.newTweet.length > this.state.max_chars ||
+                    this.props.loading
                   }
                 >
                   Tweet
@@ -79,7 +76,7 @@ class CreateTweet extends Component {
             </form>
           </div>
         }
-      </TweetsContext>
+      </TweetsContext.Consumer>
     );
   }
 }

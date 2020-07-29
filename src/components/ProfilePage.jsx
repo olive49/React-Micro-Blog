@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-
+import TweetsContext from "../TweetsContext.js";
 
 class Profile extends Component {
   constructor(props) {
@@ -14,18 +14,17 @@ class Profile extends Component {
   onSubmit(e) {
     e.preventDefault();
     this.props.onNewUserName(this.state.itemChangeText);
-
   }
 
   onChange(e) {
-    console.log(e);
     this.setState({ itemChangeText: e.target.value });
-    console.log(this.state.itemChangeText);
   }
 
   render() {
     console.log(this.props.userName);
     return (
+      <TweetsContext.Consumer>
+      {(context) => 
       <div className="profile">
         <h2>Login</h2>
         <div className="user-input">
@@ -39,8 +38,6 @@ class Profile extends Component {
             <span className="password">Password</span>
             <textarea
               className="profile-input"
-              onChange={(e) => this.onChange(e)}
-              value={this.state.itemChangeText}
             />
             <button type="submit">Sign In</button>
           </form>
@@ -54,6 +51,8 @@ class Profile extends Component {
           </span>
         </div>
       </div>
+  }
+  </TweetsContext.Consumer>
     );
   }
 }

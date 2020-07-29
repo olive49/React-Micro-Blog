@@ -68,7 +68,7 @@ class MainPage extends Component {
 
   render() {
     return (
-      <TweetsContext>
+      <TweetsContext.Consumer>
         {(context) => (
           <div>
             <div>
@@ -93,7 +93,7 @@ class MainPage extends Component {
             <div></div>
           </div>
         )}
-      </TweetsContext>
+      </TweetsContext.Consumer>
     );
   }
 }

@@ -38,12 +38,10 @@ class App extends Component {
 
   render() {
     const { userName, users, } = this.state
-    const { handleUserNameChange, handleUserNameSubmit, handleNewUserName } = this
+    const { handleUserNameChange, handleUserNameSubmit, } = this
     return (
       <TweetsContext.Provider 
-      value={{ userName: this.state.userName,
-      }}
-      users={this.state.users}
+      value={{ userName, users }}
       >
       <div>
         <Router>
@@ -61,16 +59,14 @@ class App extends Component {
                     onChange={(e) => handleUserNameChange(e)}
                     onSubmit={(e) => handleUserNameSubmit(e)}
                     onNewUserName={(newUserName) =>
-                      handleNewUserName(newUserName)
+                      this.handleNewUserName(newUserName)
                     }
                   />
                 </Route>
                 <Route path="/signup" exact>
                   <SignUp
-                  
+                  users={users}
                   />
-
-
                 </Route>
               </div>
             </Switch>
