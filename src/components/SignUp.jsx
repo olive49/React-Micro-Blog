@@ -3,7 +3,23 @@ import { Link, withRouter } from "react-router-dom";
 import TweetsContext from "../TweetsContext.js";
 
 class SignUp extends Component {
-  state = {};
+  constructor (props) {
+    super(props)
+    this.state = {
+
+    }
+  }
+
+  onSubmit(e, users){
+    e.preventDefault();
+    console.log(users)
+    this.props.onNewUserName(this.state.itemChangeText);
+  }
+
+  onChange(e) {
+    this.setState({ itemChangeText: e.target.value });
+  }
+
   render() {
     return (
       <TweetsContext.Consumer>
@@ -12,8 +28,11 @@ class SignUp extends Component {
             <h2>Sign Up</h2>
             <div className="user-input">
               <span>UserName</span>
-              <form className="user-input">
-                <textarea className="profile-input" />
+              <form className="user-input" onSubmit={(e) => this.onSubmit(e, context.users)}>
+                <textarea
+                  className="profile-input"
+                  onChange={(e) => this.onChange(e)}
+                />
                 <span className="password">Password</span>
                 <textarea className="profile-input" />
                 <button type="submit">

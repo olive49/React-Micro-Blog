@@ -35,6 +35,9 @@ class NavBar extends React.Component {
           <Link style={navStyle} to="/profile">
             <li style={{color: this.state.page == "/profile" ? "white" : "rgba(255, 255, 255, 0.5)"}}>Profile</li>
           </Link>
+          <Link style={navStyle} to="/signup">
+            <li style={{color: this.state.page == "/signup" ? "white" : "rgba(255, 255, 255, 0.5)"}}>Sign Up</li>
+          </Link>
         </ul>
       </nav>
     );

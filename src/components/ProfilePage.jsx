@@ -11,8 +11,9 @@ class Profile extends Component {
     };
   }
 
-  onSubmit(e) {
+  onSubmit(e, users) {
     e.preventDefault();
+    console.log(users)
     this.props.onNewUserName(this.state.itemChangeText);
   }
 
@@ -29,7 +30,7 @@ class Profile extends Component {
         <h2>Login</h2>
         <div className="user-input">
           <span>UserName</span>
-          <form className="user-input" onSubmit={(e) => this.onSubmit(e)}>
+          <form className="user-input" onSubmit={(e) => this.onSubmit(e, context.users)}>
             <textarea
               className="profile-input"
               onChange={(e) => this.onChange(e)}

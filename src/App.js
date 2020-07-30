@@ -66,6 +66,7 @@ class App extends Component {
                 <Route path="/signup" exact>
                   <SignUp
                   users={users}
+                  userName={userName}
                   />
                 </Route>
               </div>
