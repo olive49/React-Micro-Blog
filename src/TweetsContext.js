@@ -1,8 +1,8 @@
 import React from 'react';
 
-const UserNameContext = React.createContext({
+const TweetsContext = React.createContext({
     userName: '',
-    users: [],
+    usersArray: [],
 })
 
-export default UserNameContext
+export default TweetsContext

@@ -6,15 +6,22 @@ class SignUp extends Component {
   constructor (props) {
     super(props)
     this.state = {
-
+      itemChangeText: ""
     }
   }
 
-  onSubmit(e, users){
+  onSubmit(e, context){
     e.preventDefault();
-    console.log(users)
-    this.props.onNewUserName(this.state.itemChangeText);
-  }
+    const userName = this.state.itemChangeText
+    context.usersArray.forEach(([value]) => {
+      if (value == userName){
+        alert(`${userName} already exists. Please log in`)
+      } else {
+        this.props.onNewUserName(this.state.itemChangeText);
+      }
+    }
+    )}
+    
 
   onChange(e) {
     this.setState({ itemChangeText: e.target.value });
@@ -28,20 +35,19 @@ class SignUp extends Component {
             <h2>Sign Up</h2>
             <div className="user-input">
               <span>UserName</span>
-              <form className="user-input" onSubmit={(e) => this.onSubmit(e, context.users)}>
+              <form className="user-input" onSubmit={(e) => this.onSubmit(e, context)}>
                 <textarea
                   className="profile-input"
                   onChange={(e) => this.onChange(e)}
+                  required
                 />
                 <span className="password">Password</span>
-                <textarea className="profile-input" />
+                <textarea 
+                className="profile-input"
+                required
+                 />
                 <button type="submit">
-                  <Link
-                    to="/home"
-                    style={{ color: "white", textDecoration: "none" }}
-                  >
                     Sign Up
-                  </Link>
                 </button>
               </form>
             </div>

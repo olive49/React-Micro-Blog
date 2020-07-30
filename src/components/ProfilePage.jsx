@@ -7,14 +7,13 @@ class Profile extends Component {
     super(props);
     this.state = {
       itemChangeText: this.props.userName,
-      users: this.props.Users,
     };
   }
 
   onSubmit(e, users) {
     e.preventDefault();
     console.log(users)
-    this.props.onNewUserName(this.state.itemChangeText);
+    this.props.onLogin(this.state.itemChangeText);
   }
 
   onChange(e) {
@@ -22,23 +21,25 @@ class Profile extends Component {
   }
 
   render() {
-    console.log(this.props.userName);
     return (
       <TweetsContext.Consumer>
       {(context) => 
       <div className="profile">
+        {console.log(context.usersArray)}
         <h2>Login</h2>
         <div className="user-input">
           <span>UserName</span>
-          <form className="user-input" onSubmit={(e) => this.onSubmit(e, context.users)}>
+          <form className="user-input" onSubmit={(e) => this.onSubmit(e, context.usersArray)}>
             <textarea
               className="profile-input"
               onChange={(e) => this.onChange(e)}
               value={this.state.itemChangeText}
+              required
             />
             <span className="password">Password</span>
             <textarea
               className="profile-input"
+              required
             />
             <button type="submit">Sign In</button>
           </form>
