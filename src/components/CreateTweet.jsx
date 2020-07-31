@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import TweetsContext from "../TweetsContext.js";
 
 class CreateTweet extends Component {

@@ -1,47 +1,67 @@
-import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, withRouter, useLocation } from "react-router-dom";
 
-class NavBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      page: "/home",
-    };
-  }
+const NavBar = () => {
+  const [page, setPage] = useState("/home");
 
-  changePage = (newPage) => {
-    this.setState({ page: newPage });
+  const changePage = (newPage) => {
+    setPage(newPage);
   };
 
+  const location = useLocation();
 
-  componentDidMount() {
-    this.props.history.listen(() => {
-      this.changePage(window.location.pathname);
-    });
-  }
+  useEffect(() => {
+      changePage(location.pathname);
+  });
 
-  render() {
-    const navStyle = {
-      color: "rgba(255, 255, 255, 0.5)",
-      padding: "1rem",
-      textDecoration: "none",
-    };
-    return (
-      <nav className="nav-bar">
-        <ul className="nav">
-          <Link style={navStyle} to="/home">
-            <li style={{color: this.state.page == "/home" ? "white" : "rgba(255, 255, 255, 0.5)"}}>Home</li>
-          </Link>
-          <Link style={navStyle} to="/profile">
-            <li style={{color: this.state.page == "/profile" ? "white" : "rgba(255, 255, 255, 0.5)"}}>Profile</li>
-          </Link>
-          <Link style={navStyle} to="/signup">
-            <li style={{color: this.state.page == "/signup" ? "white" : "rgba(255, 255, 255, 0.5)"}}>Sign Up</li>
-          </Link>
-        </ul>
-      </nav>
-    );
-  }
-}
+  const navStyle = {
+    color: "rgba(255, 255, 255, 0.5)",
+    padding: "1rem",
+    textDecoration: "none",
+  };
+
+  return (
+    <nav className="nav-bar">
+      <ul className="nav">
+        <Link style={navStyle} to="/home">
+          <li
+            style={{
+              color:
+                page == "/home"
+                  ? "white"
+                  : "rgba(255, 255, 255, 0.5)",
+            }}
+          >
+            Home
+          </li>
+        </Link>
+        <Link style={navStyle} to="/profile">
+          <li
+            style={{
+              color:
+                page == "/profile"
+                  ? "white"
+                  : "rgba(255, 255, 255, 0.5)",
+            }}
+          >
+            Profile
+          </li>
+        </Link>
+        <Link style={navStyle} to="/signup">
+          <li
+            style={{
+              color:
+                page == "/signup"
+                  ? "white"
+                  : "rgba(255, 255, 255, 0.5)",
+            }}
+          >
+            Sign Up
+          </li>
+        </Link>
+      </ul>
+    </nav>
+   )
+};
 
 export default withRouter(NavBar);

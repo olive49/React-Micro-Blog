@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import React, { Component, useState } from "react";
+import { Link } from "react-router-dom";
 import TweetsContext from "../TweetsContext.js";
 
 class Profile extends Component {
