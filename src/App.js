@@ -7,38 +7,54 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import TweetsContext from "./TweetsContext";
 import SignUp from "./components/SignUp.jsx";
 
+const firebase = require("firebase");
+require("firebase/firestore");
+
+var config = {
+  apiKey: process.env.REACT_APP_FIRESTORE_API_KEY,
+  authDomain: "react-micro-blogging-62443.firebaseapp.com",
+  databaseURL:
+    "https://react-micro-blogging-62443.firebaseio.com/users/JwReLLgK2GWuyg6Z7Gpy",
+  projectId: "react-micro-blogging-62443",
+  messagingSenderId: "1031062562986",
+};
+firebase.initializeApp(config);
+
 const App = () => {
 
-  const [usersArray, setusersArray] = useState([]);
+  const db = firebase.firestore();
+  
+  const [usersArray, setUsersArray] = useState([]);
   const [userName, setUserName] = useState("Dwight");
 
-
-  useEffect(() => {
-    const getUsers = JSON.parse(localStorage.getItem("users"));
-    if (!getUsers) {
-      console.log("no users");
-    } else {
-      console.log("use effect", getUsers)
-      return setusersArray(getUsers)
-  }}, [usersArray])
-
-
   const handleNewUserName = (newUserName) => {
-    const newUsersArray = [];
-    if (usersArray.length == 0) {
-      localStorage.setItem("users", JSON.stringify(newUserName));
-      setusersArray(newUserName);
-    } else {
-        if (usersArray.includes(newUserName.toLowerCase())) {
-          console.log(`${newUserName} already exists`);
-        } else {
-          newUsersArray.push(newUserName);
-          const newUserList = [newUsersArray, ...usersArray];
-          localStorage.setItem("users", JSON.stringify(newUserName));
-          setusersArray(newUserList);
-        }
-      }
+    const newUser = [newUserName, ...usersArray];
+    setUsersArray(newUser)
+    db.collection("users")
+    .add({newUser})
+    .then((docRef) => {
+      console.log("Document was written with User ID ", docRef.id)
+    })
+    .catch((error) => {
+      console.error(`Error added user: ${newUserName} `, error)
+    })
     }
+
+    useEffect(() => {
+      const userArray = [];
+      db.collection("users")
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          const { newUser } = doc.data()
+          userArray.push(newUser)
+        })
+        setUsersArray(userArray)
+      })
+      .catch((error) => {
+        console.error("Error: ", error)
+      })
+    }, [])
 
   const handleLogin = (userName) => {
     if (usersArray.includes(userName.toLowerCase())) {
@@ -56,7 +72,7 @@ const App = () => {
               <Switch>
                 <div className="App">
                   <Route path="/home" exact>
-                    <MainPage userName={userName} />
+                    <MainPage userName={userName} db={db} />
                   </Route>
                   <Route path="/profile" exact>
                     <ProfilePage
@@ -80,6 +96,5 @@ const App = () => {
       </TweetsContext.Provider>
     );
   }
-// }
 
 export default App

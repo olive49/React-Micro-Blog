@@ -1,6 +1,6 @@
-import React from 'react';
+import { createContext }from 'react';
 
-const TweetsContext = React.createContext({
+const TweetsContext = createContext({
     userName: '',
     usersArray: [],
 })
