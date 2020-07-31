@@ -1,61 +1,52 @@
-import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import React, { useState, useContext } from "react";
 import TweetsContext from "../TweetsContext.js";
 
-class SignUp extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      itemChangeText: ""
-    }
-  }
+const SignUp = (props) => {
+  
+  const [itemChangeText, setItemChangeText] = useState("");
+  
+  const myContext = useContext(TweetsContext)
 
-  onSubmit(e, context){
+  const onSubmit = (e, myContext) => {
     e.preventDefault();
-    const userName = this.state.itemChangeText
-    context.usersArray.forEach(([value]) => {
-      if (value == userName){
-        alert(`${userName} already exists. Please log in`)
-      } else {
-        this.props.onNewUserName(this.state.itemChangeText);
+    console.log(myContext.usersArray)
+    if (myContext.usersArray.length == 0) {
+      props.onNewUserName(itemChangeText)
+    } else {
+        if (myContext.usersArray.includes(itemChangeText.toLowerCase())) {
+          alert(`${itemChangeText} already exists. Please log in`)
+          return;
+        } else {
+          props.onNewUserName(itemChangeText);
+        }
       }
     }
-    )}
-    
 
-  onChange(e) {
-    this.setState({ itemChangeText: e.target.value });
+  const onChange = (e) => {
+    setItemChangeText(e.target.value)
   }
 
-  render() {
     return (
-      <TweetsContext.Consumer>
-        {(context) => (
           <div className="profile">
             <h2>Sign Up</h2>
             <div className="user-input">
               <span>UserName</span>
-              <form className="user-input" onSubmit={(e) => this.onSubmit(e, context)}>
+              <form
+                className="user-input"
+                onSubmit={(e) => onSubmit(e, myContext)}
+              >
                 <textarea
                   className="profile-input"
-                  onChange={(e) => this.onChange(e)}
+                  onChange={(e) => onChange(e)}
                   required
                 />
                 <span className="password">Password</span>
-                <textarea 
-                className="profile-input"
-                required
-                 />
-                <button type="submit">
-                    Sign Up
-                </button>
+                <textarea className="profile-input" required />
+                <button type="submit">Sign Up</button>
               </form>
             </div>
           </div>
-        )}
-      </TweetsContext.Consumer>
     );
   }
-}
 
 export default SignUp;

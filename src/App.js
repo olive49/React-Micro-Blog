@@ -1,67 +1,54 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import MainPage from "./components/MainPage.jsx";
 import ProfilePage from "./components/ProfilePage.jsx";
 import NavBar from "./components/NavBar.jsx";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useHistory,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import TweetsContext from "./TweetsContext";
 import SignUp from "./components/SignUp.jsx";
 
-// const history = useHistory()
+const App = () => {
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      usersArray: [],
-      userName: "Dwight",
-    };
-  }
+  const [usersArray, setusersArray] = useState([]);
+  const [userName, setUserName] = useState("Dwight");
 
-  handleNewUserName(newUserName) {
-    const users = this.state.usersArray;
+
+  useEffect(() => {
+    const getUsers = JSON.parse(localStorage.getItem("users"));
+    if (!getUsers) {
+      console.log("no users");
+    } else {
+      console.log("use effect", getUsers)
+      return setusersArray(getUsers)
+  }}, [usersArray])
+
+
+  const handleNewUserName = (newUserName) => {
     const newUsersArray = [];
-    newUsersArray.push(newUserName);
-    const newUserList = [newUsersArray, ...users];
-    localStorage.setItem("users", JSON.stringify(newUserList));
-    this.setState((state) => {
-      return { usersArray: newUserList };
-    });
-  }
+    if (usersArray.length == 0) {
+      localStorage.setItem("users", JSON.stringify(newUserName));
+      setusersArray(newUserName);
+    } else {
+        if (usersArray.includes(newUserName.toLowerCase())) {
+          console.log(`${newUserName} already exists`);
+        } else {
+          newUsersArray.push(newUserName);
+          const newUserList = [newUsersArray, ...usersArray];
+          localStorage.setItem("users", JSON.stringify(newUserName));
+          setusersArray(newUserList);
+        }
+      }
+    }
 
-  handleLogin(userName) {
-    const users = this.state.usersArray;
-    console.log(userName);
-    if (users.includes(userName)) {
-      // history.push("/home")
+  const handleLogin = (userName) => {
+    if (usersArray.includes(userName.toLowerCase())) {
     } else {
       alert(`${userName} does not exist. Please sign up`);
     }
   }
 
-  componentWillMount() {
-    const getUsers = JSON.parse(localStorage.getItem("users"));
-    if (!getUsers) {
-      console.log("no users");
-    } else {
-      this.setState((state) => {
-        return { usersArray: getUsers };
-      });
-    }
-  }
-
-  render() {
-    const { userName, usersArray } = this.state;
-    console.log(usersArray)
-    const { handleUserNameChange, handleUserNameSubmit } = this;
     return (
-      <TweetsContext.Provider value={{ userName, usersArray }}>
+      <TweetsContext.Provider value={{ userName, usersArray, handleNewUserName }}>
         <div>
           <Router>
             <div>
@@ -74,18 +61,14 @@ class App extends Component {
                   <Route path="/profile" exact>
                     <ProfilePage
                       userName={userName}
-                      onChange={(e) => handleUserNameChange(e)}
-                      onSubmit={(e) => handleUserNameSubmit(e)}
-                      onLogin={(userName) => this.handleLogin(userName)}
+                      onLogin={(userName) => handleLogin(userName)}
                     />
                   </Route>
                   <Route path="/signup" exact>
                     <SignUp
                       userName={userName}
-                      onChange={(e) => handleUserNameChange(e)}
-                      onSubmit={(e) => handleUserNameSubmit(e)}
                       onNewUserName={(newUserName) =>
-                        this.handleNewUserName(newUserName)
+                        handleNewUserName(newUserName)
                       }
                     />
                   </Route>
@@ -97,6 +80,6 @@ class App extends Component {
       </TweetsContext.Provider>
     );
   }
-}
+// }
 
-export default App;
+export default App

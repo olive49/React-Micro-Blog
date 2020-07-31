@@ -1,39 +1,35 @@
-import React, { Component, useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import TweetsContext from "../TweetsContext.js";
 
-class Profile extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      itemChangeText: this.props.userName,
-    };
-  }
+const Profile = (props) => {
 
-  onSubmit(e, users) {
+  const [itemChangeText, setItemChangeText] = useState(props.userName);
+
+  const myContext = useContext(TweetsContext)
+
+
+  const onSubmit = (e, users) => {
     e.preventDefault();
     console.log(users)
-    this.props.onLogin(this.state.itemChangeText);
+    props.onLogin(itemChangeText);
   }
 
-  onChange(e) {
-    this.setState({ itemChangeText: e.target.value });
+  const onChange = (e) => {
+    setItemChangeText(e.target.value)
   }
 
-  render() {
     return (
-      <TweetsContext.Consumer>
-      {(context) => 
       <div className="profile">
-        {console.log(context.usersArray)}
+        {console.log(myContext.usersArray)}
         <h2>Login</h2>
         <div className="user-input">
           <span>UserName</span>
-          <form className="user-input" onSubmit={(e) => this.onSubmit(e, context.usersArray)}>
+          <form className="user-input" onSubmit={(e) => onSubmit(e, myContext.usersArray)}>
             <textarea
               className="profile-input"
-              onChange={(e) => this.onChange(e)}
-              value={this.state.itemChangeText}
+              onChange={(e) => onChange(e)}
+              value={itemChangeText}
               required
             />
             <span className="password">Password</span>
@@ -53,10 +49,8 @@ class Profile extends Component {
           </span>
         </div>
       </div>
-  }
-  </TweetsContext.Consumer>
     );
   }
-}
+
 
 export default Profile;

@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import CreateTweet from "./CreateTweet";
 import TweetList from "./TweetList";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -18,20 +18,18 @@ var config = {
 firebase.initializeApp(config);
 var db = firebase.firestore();
 
-class MainPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tweets: [],
-      loading: false,
-      errorMessage: "",
-    };
-  }
 
-  handleNewTweet(newTweet) {
-    const tweets = this.state.tweets
-    const newTweets = [newTweet, ...tweets]
-    this.setState({ tweets: newTweets });
+const MainPage = (props) => {
+
+const [tweets, setTweets] = useState([])
+const [loading, setLoading] = useState(false)
+const [errorMessage, setErrorMessage] = useState("")
+
+const myContext = useContext(TweetsContext)
+
+const handleNewTweet = (newTweet) => {
+  const newTweets = [newTweet, ...tweets]
+  setTweets(newTweets)
     db.collection("tweets")
       .add({
         newTweet,
@@ -44,8 +42,7 @@ class MainPage extends Component {
       });
   }
 
-  componentWillMount() {
-    const tweets = this.state.tweets
+  useEffect(() => {
     const tweetsArray = []
     db.collection("tweets")
       .get()
@@ -54,45 +51,36 @@ class MainPage extends Component {
           const { newTweet } = doc.data();
           tweetsArray.push(newTweet);
         })
-        this.setState((state) => {
-          return { tweets: tweetsArray };
-      });
+        setTweets(tweetsArray)
+      })
+      .catch((error) => {
+        console.log("Error: ", error)
   })
-  .catch((error) => {
-    console.log("Error: ", error)
   })
-}
 
-  render() {
+
     return (
-      <TweetsContext.Consumer>
-        {(context) => (
-          <div>
             <div>
               <CreateTweet
-                onNewTweet={(newTweet) => this.handleNewTweet(newTweet)}
-                loading={this.state.loading}
-                userName={context.userName}
+                onNewTweet={(newTweet) => handleNewTweet(newTweet)}
+                loading={loading}
+                userName={myContext.userName}
               />
               <div
                 style={{
-                  display: this.state.loading ? "inline-block" : "none",
+                  display: loading ? "inline-block" : "none",
                 }}
                 className="loader"
               >
                 <CircularProgress />
               </div>
-              {this.state.errorMessage && (
-                <h3 className="error">{this.state.errorMessage}</h3>
+              {errorMessage && (
+                <h3 className="error">{errorMessage}</h3>
               )}
-              <TweetList tweets={this.state.tweets} />
+              <TweetList tweets={tweets} />
             </div>
-            <div></div>
-          </div>
-        )}
-      </TweetsContext.Consumer>
-    );
-  }
-}
+    )
+              }
+              
 
 export default MainPage;

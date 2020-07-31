@@ -1,46 +1,40 @@
-import React, { Component, useState } from "react";
+import React, { useState, useContext } from "react";
 import TweetsContext from "../TweetsContext.js";
 
-class CreateTweet extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      newTweet: "",
-      max_chars: 140,
-    };
+
+const CreateTweet = (props) => {
+
+  const [newTweet, setNewTweet] = useState("")
+  const [max_chars, setMaxChars] = useState(140);
+
+  const myContext = useContext(TweetsContext)
+
+  const onChange = (event) => {
+    setNewTweet(event.target.value)
   }
 
-  onChange(event) {
-    this.setState({
-      newTweet: event.target.value,
-    });
-  }
-
-  handleOnSubmit(event) {
+  const handleOnSubmit = (event) => {
     event.preventDefault();
-    this.props.onNewTweet({
-      content: this.state.newTweet,
-      userName: this.props.userName,
+    props.onNewTweet({
+      content: newTweet,
+      userName: props.userName,
       date: new Date().toISOString(),
       id: Date.now(),
     });
-    this.setState({ newTweet: "" });
+    setNewTweet("")
   }
 
-  render() {
     return (
-      <TweetsContext.Consumer>
-        {(context) => 
           <div>
             <form
-              onSubmit={(event) => this.handleOnSubmit(event)}
+              onSubmit={(event) => handleOnSubmit(event)}
               className="form"
             >
               <textarea
                 className="text-field"
                 placeholder="What you have in mind..."
-                value={this.state.newTweet}
-                onChange={(event) => this.onChange(event)}
+                value={newTweet}
+                onChange={(event) => onChange(event)}
                 required
               />
               <div className="card-footer">
@@ -48,7 +42,7 @@ class CreateTweet extends Component {
                   className="tweet-error"
                   style={{
                     display:
-                      this.state.newTweet.length > this.state.max_chars
+                      newTweet.length > max_chars
                         ? "inline-block"
                         : "none",
                   }}
@@ -59,15 +53,15 @@ class CreateTweet extends Component {
                   className="tweet-button"
                   style={{
                     color:
-                      this.state.newTweet.length > this.state.max_chars ||
-                      this.props.loading
+                      newTweet.length > max_chars ||
+                      props.loading
                         ? "gray"
                         : "white",
                   }}
                   type="submit"
                   disabled={
-                    this.state.newTweet.length > this.state.max_chars ||
-                    this.props.loading
+                    newTweet.length > max_chars ||
+                    props.loading
                   }
                 >
                   Tweet
@@ -75,10 +69,7 @@ class CreateTweet extends Component {
               </div>
             </form>
           </div>
-        }
-      </TweetsContext.Consumer>
     );
   }
-}
 
 export default CreateTweet;
