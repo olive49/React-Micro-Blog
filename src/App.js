@@ -21,80 +21,86 @@ var config = {
 firebase.initializeApp(config);
 
 const App = () => {
-
   const db = firebase.firestore();
-  
+
   const [usersArray, setUsersArray] = useState([]);
-  const [userName, setUserName] = useState("Dwight");
+  const [userName] = useState("Dwight");
 
   const handleNewUserName = (newUserName) => {
+    console.log(usersArray);
     const newUser = [newUserName, ...usersArray];
-    setUsersArray(newUser)
-    db.collection("users")
-    .add({newUser})
-    .then((docRef) => {
-      console.log("Document was written with User ID ", docRef.id)
-    })
-    .catch((error) => {
-      console.error(`Error added user: ${newUserName} `, error)
-    })
+    {
+      usersArray.includes(newUserName)
+        ? alert(`${newUserName} already exists. Please log in.`)
+        : setUsersArray(newUser);
     }
-
-    useEffect(() => {
-      const userArray = [];
+    if (!usersArray.includes(newUserName)) {
       db.collection("users")
+        .add({ newUserName })
+        .then((docRef) => {
+          console.log("Document was written with User ID ", docRef.id);
+        })
+        .catch((error) => {
+          console.error(`Error added user: ${newUserName} `, error);
+        });
+    }
+  };
+
+  useEffect(() => {
+    const userArray = [];
+    db.collection("users")
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          const { newUser } = doc.data()
-          userArray.push(newUser)
-        })
-        setUsersArray(userArray)
+          const { newUserName } = doc.data();
+          userArray.push(newUserName);
+        });
+        setUsersArray(userArray);
       })
       .catch((error) => {
-        console.error("Error: ", error)
-      })
-    }, [])
+        console.error("Error: ", error);
+      });
+  }, []);
 
   const handleLogin = (userName) => {
     if (usersArray.includes(userName.toLowerCase())) {
     } else {
       alert(`${userName} does not exist. Please sign up`);
     }
-  }
+  };
 
-    return (
-      <TweetsContext.Provider value={{ userName, usersArray, handleNewUserName }}>
-        <div>
-          <Router>
-            <div>
-              <NavBar />
-              <Switch>
-                <div className="App">
-                  <Route path="/home" exact>
-                    <MainPage userName={userName} db={db} />
-                  </Route>
-                  <Route path="/profile" exact>
-                    <ProfilePage
-                      userName={userName}
-                      onLogin={(userName) => handleLogin(userName)}
-                    />
-                  </Route>
-                  <Route path="/signup" exact>
-                    <SignUp
-                      userName={userName}
-                      onNewUserName={(newUserName) =>
-                        handleNewUserName(newUserName)
-                      }
-                    />
-                  </Route>
-                </div>
-              </Switch>
-            </div>
-          </Router>
-        </div>
-      </TweetsContext.Provider>
-    );
-  }
+  return (
+    <TweetsContext.Provider value={{ userName, usersArray, handleNewUserName }}>
+      <div>
+        <Router>
+          <div>
+            <NavBar />
+            <Switch>
+              <div className="App">
+                <Route path="/home" exact>
+                  <MainPage userName={userName} db={db} />
+                </Route>
+                <Route path="/profile" exact>
+                  <ProfilePage
+                    userName={userName}
+                    onLogin={(userName) => handleLogin(userName)}
+                  />
+                </Route>
+                <Route path="/signup" exact>
+                  <SignUp
+                    userName={userName}
+                    onNewUserName={(newUserName) =>
+                      handleNewUserName(newUserName)
+                    }
+                  />
+                </Route>
+              </div>
+            </Switch>
+          </div>
+        </Router>
+      </div>
+    </TweetsContext.Provider>
+  );
+};
 
-export default App
+export default App;

@@ -6,8 +6,8 @@ import TweetsContext from "../TweetsContext.js";
 
 const MainPage = (props) => {
   const [tweets, setTweets] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [loading] = useState(false);
+  const [errorMessage] = useState("");
 
   const myContext = useContext(TweetsContext);
 

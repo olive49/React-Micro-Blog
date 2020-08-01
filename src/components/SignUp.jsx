@@ -8,7 +8,7 @@ const SignUp = (props) => {
 
   const onSubmit = (e, myContext) => {
     e.preventDefault();
-    console.log(myContext.usersArray);
+    console.log(myContext);
     if (myContext.usersArray.length == 0) {
       props.onNewUserName(itemChangeText);
     } else {
@@ -19,6 +19,7 @@ const SignUp = (props) => {
   const onChange = (e) => {
     setItemChangeText(e.target.value);
   };
+  
 
   return (
     <div className="profile">
