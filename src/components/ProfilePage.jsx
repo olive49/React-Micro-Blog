@@ -23,9 +23,15 @@ const Profile = (props) => {
     setPassWordText(e.target.value)
   }
 
+  const onSignOut = (e) => {
+    e.preventDefault()
+    props.onLogOut()
+
+
+  }
+
     return (
       <div className="profile">
-        {console.log(myContext.usersArray)}
         <h2>Login</h2>
         <div className="user-input">
           <span>UserName</span>
@@ -44,6 +50,7 @@ const Profile = (props) => {
               value={passWordText}
             />
             <button type="submit">Sign In</button>
+            <button type="submit" style={{display: props.signIn ? "inline-block" : "none"}}onClick={(e) => onSignOut(e)}>Sign Out</button>
           </form>
           <span>
             Don't have an account?

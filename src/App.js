@@ -9,7 +9,6 @@ import SignUp from "./components/SignUp.jsx";
 
 const firebase = require("firebase");
 require("firebase/firestore");
-var admin = require('firebase-admin');
 
 var config = {
   apiKey: process.env.REACT_APP_FIRESTORE_API_KEY,
@@ -20,15 +19,15 @@ var config = {
   messagingSenderId: "1031062562986",
 };
 firebase.initializeApp(config);
-const auth = firebase.auth()
-
+const auth = firebase.auth();
 
 const App = () => {
   const db = firebase.firestore();
 
   const [usersArray, setUsersArray] = useState([]);
-  const [userName] = useState("Dwight");
-  const [passWord] = useState("")
+  const [userName] = useState("");
+  const [passWord] = useState("");
+  const [signIn, setSignIn] = useState(false)
 
   const handleNewUserName = (newUserName, newPassWord) => {
     const newUser = [newUserName, ...usersArray];
@@ -38,16 +37,18 @@ const App = () => {
         : setUsersArray(newUser);
     }
     if (!usersArray.includes(newUserName)) {
-      const promise = auth.createUserWithEmailAndPassword(newUserName, newPassWord)
-      promise.catch(e => console.error(e));
-      db.collection("users")
-        .add({ newUserName })
-        .then((docRef) => {
-          console.log("Document was written with User ID ", docRef.id);
-        })
-        .catch((error) => {
-          console.error(`Error added user: ${newUserName} `, error);
-        });
+      const promise = auth.createUserWithEmailAndPassword(
+        newUserName,
+        newPassWord
+      );
+      promise.catch((e) => console.error(e));
+      firebase.auth().onAuthStateChanged((firebaseUser) => {
+        if (firebaseUser) {
+          console.log(firebaseUser);
+        } else {
+          console.error("not logged in");
+        }
+      });
     }
   };
 
@@ -68,16 +69,18 @@ const App = () => {
   }, []);
 
   const handleLogin = (userName, passWord) => {
-    if (usersArray.includes(userName.toLowerCase())) {
-      const promise = auth.signInWithEmailAndPassword(userName, passWord)
-      promise.catch(e => console.error(e.message));
-    } else {
-      alert(`${userName} does not exist. Please sign up`);
-    }
+    const promise = auth.signInWithEmailAndPassword(userName, passWord);
+    promise.then(setSignIn(true))
+    promise.catch((e) => console.error(e.message));
+  };
+
+  const handleLogOut = () => {
+    setSignIn(false)
+    firebase.auth().signOut()
   };
 
   return (
-    <TweetsContext.Provider value={{ userName, usersArray, handleNewUserName }}>
+    <TweetsContext.Provider value={{ userName, usersArray, handleNewUserName, signIn }}>
       <div>
         <Router>
           <div>
@@ -90,7 +93,11 @@ const App = () => {
                 <Route path="/profile" exact>
                   <ProfilePage
                     userName={userName}
-                    onLogin={(userName, passWord) => handleLogin(userName, passWord)}
+                    onLogin={(userName, passWord) =>
+                      handleLogin(userName, passWord)
+                    }
+                    onLogOut={() => handleLogOut()}
+                    signIn={signIn}
                   />
                 </Route>
                 <Route path="/signup" exact>
