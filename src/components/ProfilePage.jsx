@@ -5,18 +5,22 @@ import TweetsContext from "../TweetsContext.js";
 const Profile = (props) => {
 
   const [itemChangeText, setItemChangeText] = useState(props.userName);
+  const [passWordText, setPassWordText] = useState("")
 
   const myContext = useContext(TweetsContext)
 
 
-  const onSubmit = (e, users) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    console.log(users)
-    props.onLogin(itemChangeText);
+    props.onLogin(itemChangeText, passWordText);
   }
 
-  const onChange = (e) => {
+  const onChangeUserName = (e) => {
     setItemChangeText(e.target.value)
+  }
+
+  const onChangePassWord = (e) => {
+    setPassWordText(e.target.value)
   }
 
     return (
@@ -28,7 +32,7 @@ const Profile = (props) => {
           <form className="user-input" onSubmit={(e) => onSubmit(e, myContext.usersArray)}>
             <textarea
               className="profile-input"
-              onChange={(e) => onChange(e)}
+              onChange={(e) => onChangeUserName(e)}
               value={itemChangeText}
               required
             />
@@ -36,6 +40,8 @@ const Profile = (props) => {
             <textarea
               className="profile-input"
               required
+              onChange={(e) => onChangePassWord(e)}
+              value={passWordText}
             />
             <button type="submit">Sign In</button>
           </form>

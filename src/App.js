@@ -9,6 +9,7 @@ import SignUp from "./components/SignUp.jsx";
 
 const firebase = require("firebase");
 require("firebase/firestore");
+var admin = require('firebase-admin');
 
 var config = {
   apiKey: process.env.REACT_APP_FIRESTORE_API_KEY,
@@ -19,15 +20,17 @@ var config = {
   messagingSenderId: "1031062562986",
 };
 firebase.initializeApp(config);
+const auth = firebase.auth()
+
 
 const App = () => {
   const db = firebase.firestore();
 
   const [usersArray, setUsersArray] = useState([]);
   const [userName] = useState("Dwight");
+  const [passWord] = useState("")
 
-  const handleNewUserName = (newUserName) => {
-    console.log(usersArray);
+  const handleNewUserName = (newUserName, newPassWord) => {
     const newUser = [newUserName, ...usersArray];
     {
       usersArray.includes(newUserName)
@@ -35,6 +38,8 @@ const App = () => {
         : setUsersArray(newUser);
     }
     if (!usersArray.includes(newUserName)) {
+      const promise = auth.createUserWithEmailAndPassword(newUserName, newPassWord)
+      promise.catch(e => console.error(e));
       db.collection("users")
         .add({ newUserName })
         .then((docRef) => {
@@ -62,8 +67,10 @@ const App = () => {
       });
   }, []);
 
-  const handleLogin = (userName) => {
+  const handleLogin = (userName, passWord) => {
     if (usersArray.includes(userName.toLowerCase())) {
+      const promise = auth.signInWithEmailAndPassword(userName, passWord)
+      promise.catch(e => console.error(e.message));
     } else {
       alert(`${userName} does not exist. Please sign up`);
     }
@@ -83,14 +90,14 @@ const App = () => {
                 <Route path="/profile" exact>
                   <ProfilePage
                     userName={userName}
-                    onLogin={(userName) => handleLogin(userName)}
+                    onLogin={(userName, passWord) => handleLogin(userName, passWord)}
                   />
                 </Route>
                 <Route path="/signup" exact>
                   <SignUp
                     userName={userName}
-                    onNewUserName={(newUserName) =>
-                      handleNewUserName(newUserName)
+                    onNewUserName={(newUserName, newPassWord) =>
+                      handleNewUserName(newUserName, newPassWord)
                     }
                   />
                 </Route>

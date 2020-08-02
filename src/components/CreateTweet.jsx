@@ -5,7 +5,7 @@ import TweetsContext from "../TweetsContext.js";
 const CreateTweet = (props) => {
 
   const [newTweet, setNewTweet] = useState("")
-  const [max_chars, setMaxChars] = useState(140);
+  const [max_chars] = useState(140);
 
   const myContext = useContext(TweetsContext)
 

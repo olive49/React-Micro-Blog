@@ -3,21 +3,27 @@ import TweetsContext from "../TweetsContext.js";
 
 const SignUp = (props) => {
   const [itemChangeText, setItemChangeText] = useState("");
+  const [passWordText, setPassWordText] = useState("");
+
 
   const myContext = useContext(TweetsContext);
 
-  const onSubmit = (e, myContext) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    console.log(myContext);
-    if (myContext.usersArray.length == 0) {
-      props.onNewUserName(itemChangeText);
-    } else {
-      props.onNewUserName(itemChangeText);
-    }
+    // console.log(myContext);
+    // if (myContext.usersArray.length == 0) {
+      props.onNewUserName(itemChangeText, passWordText);
+    // } else {
+    //   props.onNewUserName(itemChangeText, passWordText);
+    // }
   };
 
-  const onChange = (e) => {
+  const onChangeUserName = (e) => {
     setItemChangeText(e.target.value);
+  };
+
+  const onChangePassWord = (e) => {
+    setPassWordText(e.target.value);
   };
   
 
@@ -29,11 +35,14 @@ const SignUp = (props) => {
         <form className="user-input" onSubmit={(e) => onSubmit(e, myContext)}>
           <textarea
             className="profile-input"
-            onChange={(e) => onChange(e)}
+            onChange={(e) => onChangeUserName(e)}
             required
           />
           <span className="password">Password</span>
-          <textarea className="profile-input" required />
+          <textarea 
+          className="profile-input"
+          onChange={(e) => onChangePassWord(e)} 
+          required />
           <button type="submit">Sign Up</button>
         </form>
       </div>
