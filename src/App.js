@@ -25,8 +25,8 @@ const App = () => {
   const db = firebase.firestore();
 
   const [usersArray, setUsersArray] = useState([]);
-  const [userName] = useState("");
-  const [passWord] = useState("");
+  const [userName, setUserName] = useState("");
+  const [passWord, setPassWord] = useState("");
   const [signIn, setSignIn] = useState(false)
 
   const handleNewUserName = (newUserName, newPassWord) => {

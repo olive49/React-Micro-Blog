@@ -4,7 +4,7 @@ import TweetsContext from "../TweetsContext.js";
 
 const Profile = (props) => {
 
-  const [itemChangeText, setItemChangeText] = useState(props.userName);
+  const [itemChangeText, setItemChangeText] = useState("");
   const [passWordText, setPassWordText] = useState("")
 
   const myContext = useContext(TweetsContext)
@@ -25,6 +25,8 @@ const Profile = (props) => {
 
   const onSignOut = (e) => {
     e.preventDefault()
+    setItemChangeText("")
+    setPassWordText("")
     props.onLogOut()
 
 
@@ -49,8 +51,10 @@ const Profile = (props) => {
               onChange={(e) => onChangePassWord(e)}
               value={passWordText}
             />
+            <div className="profile-buttons">
             <button type="submit">Sign In</button>
             <button type="submit" style={{display: props.signIn ? "inline-block" : "none"}}onClick={(e) => onSignOut(e)}>Sign Out</button>
+            </div>
           </form>
           <span>
             Don't have an account?

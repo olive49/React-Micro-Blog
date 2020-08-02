@@ -175,3 +175,21 @@ h4 {
 .password{
   padding-top: 0.7rem;
 }
+
+.profile-buttons{
+  display: flex;
+  margin-left: auto;
+  margin-bottom: 3rem;
+}
+
+.profile-buttons>button{
+  background-color: #007BFF;
+  font-size: 1rem;
+  color: white;
+  border-radius: 5px;
+  border: 0;
+  padding: 0.5rem;
+  margin-top: 0.5rem; 
+  margin-left: 0.3rem;
+  width: 5rem;
+}
