@@ -1,9 +1,12 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState, useContext } from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import TweetsContext from "../TweetsContext.js";
 
 const Tweet = (props) => {
   const { tweet } = props;
+  const myContext = useContext(TweetsContext)
+
   return (
         <div>
           <li className="tweet-li">
@@ -19,6 +22,7 @@ const Tweet = (props) => {
               <div className="tweet-card-header">
                 <span>{tweet.userName}</span>
                 <span>{tweet.date}</span>
+                <img src={myContext.currentUser.imageUrl} style={{width: "20%", borderRadius: "50%"}}></img>
               </div>
               <CardContent>{tweet.content}</CardContent>
             </Card>

@@ -3,17 +3,28 @@ import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import TweetsContext from "../TweetsContext.js";
 import firebase from "firebase"
 
-const uiConfig = {
-  signInFlow: 'popup',
-  signInSuccessUrl: '/home',
-  signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID,]
-};
 
 const SignUp = (props) => {
   const [itemChangeText, setItemChangeText] = useState("");
   const [passWordText, setPassWordText] = useState("");
 
   const myContext = useContext(TweetsContext);
+
+  const uiConfig = {
+    signInFlow: 'popup',
+    signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID,],
+    callbacks: {
+      signInSuccessWithAuthResult: (result) => {
+        const { profile } = result.additionalUserInfo
+        console.log(profile)
+        myContext.setCurrentUser({
+          displayName: profile.name,
+          id: profile.id,
+          imageUrl: profile.picture
+        }) 
+      }
+    }
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();

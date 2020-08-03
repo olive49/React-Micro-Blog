@@ -28,6 +28,21 @@ const App = () => {
   const [userName, setUserName] = useState("");
   const [passWord, setPassWord] = useState("");
   const [signIn, setSignIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null)
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        setCurrentUser(null)
+      } else {
+        setCurrentUser({ 
+          id: user.id, 
+          displayName: user.message + '', 
+          imageUrl: user.photo + '',
+        })
+      }
+    })
+  }, [])
 
 
 
@@ -47,12 +62,6 @@ const App = () => {
     });
   };
 
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        console.log(user);
-      }
-    });
     // const userArray = [];
     // db.collection("users")
     //   .get()
@@ -66,7 +75,6 @@ const App = () => {
     //   .catch((error) => {
     //     console.error("Error: ", error);
     //   });
-  });
 
   const handleLogin = (userName, passWord) => {
     const promise = auth.signInWithEmailAndPassword(userName, passWord);
@@ -97,7 +105,7 @@ const App = () => {
 
   return (
     <TweetsContext.Provider
-      value={{ userName, usersArray }}
+      value={{ userName, usersArray, currentUser, setCurrentUser }}
     >
       <div>
         <Router>
