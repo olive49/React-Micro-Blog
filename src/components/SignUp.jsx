@@ -1,21 +1,23 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import TweetsContext from "../TweetsContext.js";
+import firebase from "firebase"
+
+const uiConfig = {
+  signInFlow: 'popup',
+  signInSuccessUrl: '/home',
+  signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID,]
+};
 
 const SignUp = (props) => {
   const [itemChangeText, setItemChangeText] = useState("");
   const [passWordText, setPassWordText] = useState("");
 
-
   const myContext = useContext(TweetsContext);
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // console.log(myContext);
-    // if (myContext.usersArray.length == 0) {
-      props.onNewUserName(itemChangeText, passWordText);
-    // } else {
-    //   props.onNewUserName(itemChangeText, passWordText);
-    // }
+    props.onNewUserName(itemChangeText, passWordText);
   };
 
   const onChangeUserName = (e) => {
@@ -24,14 +26,13 @@ const SignUp = (props) => {
 
   const onChangePassWord = (e) => {
     setPassWordText(e.target.value);
-  };
-  
+  }; 
 
   return (
     <div className="profile">
-      <h2>Sign Up</h2>
+      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} className="google"/>
       <div className="user-input">
-        <span>UserName</span>
+        <span>Email</span>
         <form className="user-input" onSubmit={(e) => onSubmit(e, myContext)}>
           <textarea
             className="profile-input"

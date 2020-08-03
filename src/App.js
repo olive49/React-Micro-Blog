@@ -6,11 +6,11 @@ import NavBar from "./components/NavBar.jsx";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import TweetsContext from "./TweetsContext";
 import SignUp from "./components/SignUp.jsx";
+import firebase from "firebase"
+import "firebase/auth"
+import "firebase/firestore"
 
-const firebase = require("firebase");
-require("firebase/firestore");
-
-var config = {
+const config = {
   apiKey: process.env.REACT_APP_FIRESTORE_API_KEY,
   authDomain: "react-micro-blogging-62443.firebaseapp.com",
   databaseURL:
@@ -27,60 +27,78 @@ const App = () => {
   const [usersArray, setUsersArray] = useState([]);
   const [userName, setUserName] = useState("");
   const [passWord, setPassWord] = useState("");
-  const [signIn, setSignIn] = useState(false)
+  const [signIn, setSignIn] = useState(false);
+
+
 
   const handleNewUserName = (newUserName, newPassWord) => {
-    const newUser = [newUserName, ...usersArray];
-    {
-      usersArray.includes(newUserName)
-        ? alert(`${newUserName} already exists. Please log in.`)
-        : setUsersArray(newUser);
-    }
-    if (!usersArray.includes(newUserName)) {
-      const promise = auth.createUserWithEmailAndPassword(
-        newUserName,
-        newPassWord
-      );
-      promise.catch((e) => console.error(e));
-      firebase.auth().onAuthStateChanged((firebaseUser) => {
-        if (firebaseUser) {
-          console.log(firebaseUser);
-        } else {
-          console.error("not logged in");
-        }
-      });
-    }
+    const promise = auth.createUserWithEmailAndPassword(
+      newUserName,
+      newPassWord
+    ).then(alert(`Welcome to Tweeter, ${newUserName}!`))
+    promise.catch((e) => {
+      if (
+        e.message === "The email address is already in use by another account."
+      ) {
+        alert("Email already exists. Please log in.");
+      } else {
+        console.error(e.message);
+      }
+    });
   };
 
   useEffect(() => {
-    const userArray = [];
-    db.collection("users")
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          const { newUserName } = doc.data();
-          userArray.push(newUserName);
-        });
-        setUsersArray(userArray);
-      })
-      .catch((error) => {
-        console.error("Error: ", error);
-      });
-  }, []);
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log(user);
+      }
+    });
+    // const userArray = [];
+    // db.collection("users")
+    //   .get()
+    //   .then((querySnapshot) => {
+    //     querySnapshot.forEach((doc) => {
+    //       const { newUserName } = doc.data();
+    //       userArray.push(newUserName);
+    //     });
+    //     setUsersArray(userArray);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error: ", error);
+    //   });
+  });
 
   const handleLogin = (userName, passWord) => {
     const promise = auth.signInWithEmailAndPassword(userName, passWord);
-    promise.then(setSignIn(true))
+    promise.then(setSignIn(true));
     promise.catch((e) => console.error(e.message));
   };
 
   const handleLogOut = () => {
-    setSignIn(false)
-    firebase.auth().signOut()
+    setSignIn(false);
+    firebase.auth().signOut();
+  };
+
+  const handleUpdateInfo = (userDisplayName, photo) => {
+    const user = firebase.auth().currentUser;
+
+    user
+      .updateProfile({
+        displayName: userDisplayName,
+        photoURL: photo,
+      })
+      .then(function () {
+        // Update successful.
+      })
+      .catch(function (error) {
+        // An error happened.
+      });
   };
 
   return (
-    <TweetsContext.Provider value={{ userName, usersArray, handleNewUserName, signIn }}>
+    <TweetsContext.Provider
+      value={{ userName, usersArray }}
+    >
       <div>
         <Router>
           <div>
@@ -105,6 +123,9 @@ const App = () => {
                     userName={userName}
                     onNewUserName={(newUserName, newPassWord) =>
                       handleNewUserName(newUserName, newPassWord)
+                    }
+                    onUpdateInfo={(userDisplayName, photo) =>
+                      handleUpdateInfo(userDisplayName, photo)
                     }
                   />
                 </Route>
