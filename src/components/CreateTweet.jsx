@@ -8,8 +8,6 @@ const CreateTweet = (props) => {
   const [max_chars] = useState(140);
 
   const myContext = useContext(TweetsContext)
-
-  console.log(myContext)
   
   const onChange = (event) => {
     setNewTweet(event.target.value)

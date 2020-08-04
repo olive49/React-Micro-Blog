@@ -19,6 +19,7 @@ const SignUp = (props) => {
       signInSuccessWithAuthResult: (result) => {
         console.log(result)
         const { profile } = result.additionalUserInfo
+        console.log(profile)
         myContext.setCurrentUser({
           displayName: profile.name,
           id: profile.id,

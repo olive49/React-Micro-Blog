@@ -25,7 +25,6 @@ const auth = firebase.auth();
 const App = () => {
   const db = firebase.firestore();
 
-  // const [usersArray, setUsersArray] = useState([]);
   const [userName, setUserName] = useState("");
   const [passWord, setPassWord] = useState("");
   const [signIn, setSignIn] = useState(false);
@@ -35,6 +34,14 @@ const App = () => {
   const [userUserName, setUserUserName] = useState(null);
   const [userId, setUserId] = useState(null);
   const [userPhoto, setUserPhoto] = useState(null);
+
+  const user = firebase.auth().currentUser;
+
+  if (user) {
+  console.log(user)
+  } else {
+  console.log("no one is signed in")
+  }
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
@@ -58,7 +65,7 @@ const App = () => {
           });
       }
     });
-  }, []);
+  }, currentUser);
 
   const handleNewUserName = (newUserName, newPassWord) => {
     const promise = auth
@@ -76,11 +83,6 @@ const App = () => {
   };
 
   const handlePersistUser = (userUserName, userPhoto, userEmail) => {
-    setCurrentUser({
-      displayName: userUserName,
-      imageUrl: userPhoto,
-      id: userEmail,
-    });
     db.collection("users")
       .add({
         displayName: userUserName,
@@ -111,7 +113,7 @@ const App = () => {
       value={{
         currentUser,
         setCurrentUser,
-        // logout: () => setCurrentUser(null),
+        logout: () => setCurrentUser(null),
       }}
     >
       <div>
