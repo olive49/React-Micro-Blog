@@ -55,6 +55,27 @@ const SignUp = (props) => {
           className="profile-input"
           onChange={(e) => onChangePassWord(e)} 
           required />
+          <span>User Name</span>
+          <textarea
+            className="profile-input"
+            // onChange={(e) => onChangeUserName(e)}
+            // value={itemChangeText}
+            required
+          />
+          <span>User ID</span>
+          <textarea
+            className="profile-input"
+            // onChange={(e) => onChangeUserName(e)}
+            // value={itemChangeText}
+            required
+          />
+          <span>Photo URL</span>
+          <textarea
+            className="profile-input"
+            // onChange={(e) => onChangeUserName(e)}
+            // value={itemChangeText}
+            required
+          />
           <button type="submit">Sign Up</button>
         </form>
       </div>

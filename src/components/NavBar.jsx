@@ -11,7 +11,7 @@ const NavBar = () => {
   const location = useLocation();
 
   useEffect(() => {
-      changePage(location.pathname);
+    changePage(location.pathname);
   });
 
   const navStyle = {
@@ -26,10 +26,7 @@ const NavBar = () => {
         <Link style={navStyle} to="/home">
           <li
             style={{
-              color:
-                page == "/home"
-                  ? "white"
-                  : "rgba(255, 255, 255, 0.5)",
+              color: page == "/home" ? "white" : "rgba(255, 255, 255, 0.5)",
             }}
           >
             Home
@@ -38,30 +35,34 @@ const NavBar = () => {
         <Link style={navStyle} to="/profile">
           <li
             style={{
-              color:
-                page == "/profile"
-                  ? "white"
-                  : "rgba(255, 255, 255, 0.5)",
+              color: page == "/profile" ? "white" : "rgba(255, 255, 255, 0.5)",
             }}
           >
-            Profile
+            Log In
           </li>
         </Link>
         <Link style={navStyle} to="/signup">
           <li
             style={{
-              color:
-                page == "/signup"
-                  ? "white"
-                  : "rgba(255, 255, 255, 0.5)",
+              color: page == "/signup" ? "white" : "rgba(255, 255, 255, 0.5)",
             }}
           >
             Sign Up
           </li>
         </Link>
+        <Link style={navStyle} to="/updateprofile">
+          <li
+            style={{
+              color:
+                page == "/updateprofile" ? "white" : "rgba(255, 255, 255, 0.5)",
+            }}
+          >
+            Update Profile
+          </li>
+        </Link>
       </ul>
     </nav>
-   )
+  );
 };
 
 export default withRouter(NavBar);

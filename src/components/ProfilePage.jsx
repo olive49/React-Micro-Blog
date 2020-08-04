@@ -37,7 +37,7 @@ const Profile = (props) => {
         <h2>Login</h2>
         <div className="user-input">
           <span>UserName</span>
-          <form className="user-input" onSubmit={(e) => onSubmit(e, myContext.usersArray)}>
+          <form className="user-input" onSubmit={(e) => onSubmit(e)}>
             <textarea
               className="profile-input"
               onChange={(e) => onChangeUserName(e)}

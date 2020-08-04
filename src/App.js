@@ -3,6 +3,7 @@ import "./App.css";
 import MainPage from "./components/MainPage.jsx";
 import ProfilePage from "./components/ProfilePage.jsx";
 import NavBar from "./components/NavBar.jsx";
+import UpdateProfile from "./components/UpdateProfile.jsx"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import TweetsContext from "./TweetsContext";
 import SignUp from "./components/SignUp.jsx";
@@ -105,7 +106,12 @@ const App = () => {
 
   return (
     <TweetsContext.Provider
-      value={{ userName, usersArray, currentUser, setCurrentUser }}
+      value={{ 
+        // userName, 
+        // usersArray, 
+        currentUser, 
+        setCurrentUser,
+       }}
     >
       <div>
         <Router>
@@ -135,6 +141,11 @@ const App = () => {
                     onUpdateInfo={(userDisplayName, photo) =>
                       handleUpdateInfo(userDisplayName, photo)
                     }
+                  />
+                </Route>
+                <Route path="/updateprofile" exact>
+                  <UpdateProfile
+                    userName={userName}
                   />
                 </Route>
               </div>
