@@ -8,7 +8,6 @@ const SignUp = (props) => {
   const [userEmail, setUserEmail] = useState(null);
   const [userPassWord, setUserPassWord] = useState(null);
   const [userUserName, setUserUserName] = useState(null);
-  const [userId, setUserId] = useState(null);;
   const [userPhoto, setUserPhoto] = useState(null);
 
   const myContext = useContext(TweetsContext);
@@ -32,7 +31,7 @@ const SignUp = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     props.onNewUserName(userEmail, userPassWord)
-    props.onPersistNewUser(userUserName, userId, userPhoto)
+    props.onPersistNewUser(userUserName, userPhoto, userEmail)
   };
 
   const onChangeEmail = (e) => {
@@ -47,9 +46,6 @@ const SignUp = (props) => {
     setUserUserName(e.target.value);
   }; 
 
-  const onChangeUserId = (e) => {
-    setUserId(e.target.value);
-  }; 
 
   const onChangeUserPhoto = (e) => {
     setUserPhoto(e.target.value);
@@ -75,12 +71,6 @@ const SignUp = (props) => {
           <textarea
             className="profile-input"
             onChange={(e) => onChangeUserName(e)}
-            required
-          />
-          <span>User ID</span>
-          <textarea
-            className="profile-input"
-            onChange={(e) => onChangeUserId(e)}
             required
           />
           <span>Photo URL</span>

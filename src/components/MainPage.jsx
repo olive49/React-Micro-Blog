@@ -6,7 +6,7 @@ import TweetsContext from "../TweetsContext.js";
 
 const MainPage = (props) => {
   const [tweets, setTweets] = useState([]);
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [errorMessage] = useState("");
 
   const myContext = useContext(TweetsContext);
@@ -27,6 +27,7 @@ const MainPage = (props) => {
   };
 
   useEffect(() => {
+    setLoading(true)
     const tweetsArray = [];
     props.db.collection("tweets")
       .get()
@@ -38,6 +39,7 @@ const MainPage = (props) => {
         const sorted = tweetsArray.sort((a, b) => {
           return new Date(b.date) - new Date(a.date)
         })
+        setLoading(false)
         setTweets(sorted);
       })
       .catch((error) => {

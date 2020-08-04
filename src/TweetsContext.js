@@ -1,8 +1,8 @@
 import { createContext }from 'react';
 
 const TweetsContext = createContext({
-    userName: '',
-    usersArray: [],
+    // userName: '',
+    // usersArray: [],
     currentUser: null,
     setCurrentUser: () => {},
     logout: () => {},

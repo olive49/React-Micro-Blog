@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import TweetsContext from "../TweetsContext.js";
 
 
@@ -9,9 +9,12 @@ const CreateTweet = (props) => {
 
   const myContext = useContext(TweetsContext)
 
+  console.log(myContext)
+  
   const onChange = (event) => {
     setNewTweet(event.target.value)
   }
+
 
   const handleOnSubmit = (event) => {
     event.preventDefault();

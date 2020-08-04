@@ -33,7 +33,7 @@ const App = () => {
   const [userEmail, setUserEmail] = useState(null);
   const [userPassWord, setUserPassWord] = useState(null);
   const [userUserName, setUserUserName] = useState(null);
-  const [userId, setUserId] = useState(null);;
+  const [userId, setUserId] = useState(null);
   const [userPhoto, setUserPhoto] = useState(null);
 
   useEffect(() => {
@@ -41,20 +41,29 @@ const App = () => {
       if (!user) {
         setCurrentUser(null);
       } else {
-        setCurrentUser({
-          id: user.id,
-          displayName: user.message + "",
-          imageUrl: user.photo + "",
-        });
+        db.collection("users")
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              const { id, displayName, imageUrl } = doc.data();
+                setCurrentUser({
+                  id,
+                  displayName,
+                  imageUrl,
+                })
+            });
+          })
+          .catch((error) => {
+            console.error("Error: ", error);
+          });
       }
     });
-  }, [currentUser] );
+  }, []);
 
   const handleNewUserName = (newUserName, newPassWord) => {
     const promise = auth
       .createUserWithEmailAndPassword(newUserName, newPassWord)
       .then(alert(`Welcome to Tweeter, ${newUserName}!`));
-    // handlePersistUser(userUserName, userId, userPhoto)
     promise.catch((e) => {
       if (
         e.message === "The email address is already in use by another account."
@@ -66,16 +75,16 @@ const App = () => {
     });
   };
 
-  const handlePersistUser = (userUserName, userId, userPhoto) => {
+  const handlePersistUser = (userUserName, userPhoto, userEmail) => {
     setCurrentUser({
       displayName: userUserName,
-      id: userId,
       imageUrl: userPhoto,
-    })
+      id: userEmail,
+    });
     db.collection("users")
       .add({
         displayName: userUserName,
-        id: userId,
+        id: userEmail,
         imageUrl: userPhoto,
       })
       .then((docRef) => {
@@ -85,20 +94,6 @@ const App = () => {
         console.error(`Error added user: ${userUserName} `, error);
       });
   };
-
-  // const userArray = [];
-  // db.collection("users")
-  //   .get()
-  //   .then((querySnapshot) => {
-  //     querySnapshot.forEach((doc) => {
-  //       const { newUserName } = doc.data();
-  //       userArray.push(newUserName);
-  //     });
-  //     setUsersArray(userArray);
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error: ", error);
-  //   });
 
   const handleLogin = (userName, passWord) => {
     const promise = auth.signInWithEmailAndPassword(userName, passWord);
@@ -111,13 +106,12 @@ const App = () => {
     firebase.auth().signOut();
   };
 
-
   return (
     <TweetsContext.Provider
       value={{
         currentUser,
         setCurrentUser,
-        logout: () => setCurrentUser(null),
+        // logout: () => setCurrentUser(null),
       }}
     >
       <div>
@@ -142,11 +136,23 @@ const App = () => {
                 <Route path="/signup" exact>
                   <SignUp
                     userName={userName}
-                    onNewUserName={(newUserName, newPassWord, userUserName, userId, userPhoto) =>
-                      handleNewUserName(newUserName, newPassWord, userUserName, userId, userPhoto)
+                    onNewUserName={(
+                      newUserName,
+                      newPassWord,
+                      userUserName,
+                      userId,
+                      userPhoto
+                    ) =>
+                      handleNewUserName(
+                        newUserName,
+                        newPassWord,
+                        userUserName,
+                        userId,
+                        userPhoto
+                      )
                     }
-                    onPersistNewUser={(userUserName, userId, userPhoto) =>
-                      handlePersistUser(userUserName, userId, userPhoto)
+                    onPersistNewUser={(userUserName,userPhoto, userEmail) =>
+                      handlePersistUser(userUserName, userPhoto, userEmail)
                     }
                   />
                 </Route>
