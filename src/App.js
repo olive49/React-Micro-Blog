@@ -3,7 +3,6 @@ import "./App.css";
 import MainPage from "./components/MainPage.jsx";
 import ProfilePage from "./components/ProfilePage.jsx";
 import NavBar from "./components/NavBar.jsx";
-import UpdateProfile from "./components/UpdateProfile.jsx";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import TweetsContext from "./TweetsContext";
 import SignUp from "./components/SignUp.jsx";
@@ -25,52 +24,42 @@ const auth = firebase.auth();
 const App = () => {
   const db = firebase.firestore();
 
-  const [userName, setUserName] = useState("");
-  const [passWord, setPassWord] = useState("");
+  const [userName] = useState("");
   const [signIn, setSignIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
-  const [userPassWord, setUserPassWord] = useState(null);
-  const [userUserName, setUserUserName] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [userPhoto, setUserPhoto] = useState(null);
 
-  const user = firebase.auth().currentUser;
-
-  if (user) {
-  console.log(user)
-  } else {
-  console.log("no one is signed in")
-  }
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
+    const user = firebase.auth().currentUser
       if (!user) {
         setCurrentUser(null);
       } else {
+        console.log(user.email)
         db.collection("users")
           .get()
           .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
               const { id, displayName, imageUrl } = doc.data();
+              if (id === user.email) {
                 setCurrentUser({
                   id,
                   displayName,
                   imageUrl,
-                })
-            });
-          })
-          .catch((error) => {
-            console.error("Error: ", error);
-          });
+                });
+              }
+                });
+              })
+              .catch((error) => {
+                console.error("Error: ", error);
+              });
       }
-    });
-  }, currentUser);
+    }, [userEmail] )
 
   const handleNewUserName = (newUserName, newPassWord) => {
     const promise = auth
       .createUserWithEmailAndPassword(newUserName, newPassWord)
-      .then(alert(`Welcome to Tweeter, ${newUserName}!`));
+      .then(alert(`Welcome to Tweeter, ${newUserName}! Please log in to continue`));
     promise.catch((e) => {
       if (
         e.message === "The email address is already in use by another account."
@@ -97,8 +86,9 @@ const App = () => {
       });
   };
 
-  const handleLogin = (userName, passWord) => {
+  const handleLogin = (userName, passWord, ) => {
     const promise = auth.signInWithEmailAndPassword(userName, passWord);
+    promise.then(setUserEmail(userName))
     promise.then(setSignIn(true));
     promise.catch((e) => console.error(e.message));
   };
@@ -153,7 +143,7 @@ const App = () => {
                         userPhoto
                       )
                     }
-                    onPersistNewUser={(userUserName,userPhoto, userEmail) =>
+                    onPersistNewUser={(userUserName, userPhoto, userEmail) =>
                       handlePersistUser(userUserName, userPhoto, userEmail)
                     }
                   />

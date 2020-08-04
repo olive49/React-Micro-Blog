@@ -18,10 +18,10 @@ const CreateTweet = (props) => {
     event.preventDefault();
     props.onNewTweet({
       content: newTweet,
-      userName: myContext.currentUser.displayName,
+      userName: myContext.currentUser ? myContext.currentUser.displayName : "",
       date: new Date().toISOString(),
       id: Date.now(),
-      photo: myContext.currentUser.imageUrl
+      photo: myContext.currentUser ? myContext.currentUser.imageUrl : "",
     });
     setNewTweet("")
   }
