@@ -5,8 +5,11 @@ import firebase from "firebase"
 
 
 const SignUp = (props) => {
-  const [itemChangeText, setItemChangeText] = useState("");
-  const [passWordText, setPassWordText] = useState("");
+  const [userEmail, setUserEmail] = useState(null);
+  const [userPassWord, setUserPassWord] = useState(null);
+  const [userUserName, setUserUserName] = useState(null);
+  const [userId, setUserId] = useState(null);;
+  const [userPhoto, setUserPhoto] = useState(null);
 
   const myContext = useContext(TweetsContext);
 
@@ -15,8 +18,8 @@ const SignUp = (props) => {
     signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID,],
     callbacks: {
       signInSuccessWithAuthResult: (result) => {
+        console.log(result)
         const { profile } = result.additionalUserInfo
-        console.log(profile)
         myContext.setCurrentUser({
           displayName: profile.name,
           id: profile.id,
@@ -28,29 +31,42 @@ const SignUp = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    props.onNewUserName(itemChangeText, passWordText);
+    props.onNewUserName(userEmail, userPassWord)
+    props.onPersistNewUser(userUserName, userId, userPhoto)
   };
 
-  const onChangeUserName = (e) => {
-    setItemChangeText(e.target.value);
+  const onChangeEmail = (e) => {
+    setUserEmail(e.target.value);
   };
 
   const onChangePassWord = (e) => {
-    setPassWordText(e.target.value);
+    setUserPassWord(e.target.value);
+  }; 
+
+  const onChangeUserName = (e) => {
+    setUserUserName(e.target.value);
+  }; 
+
+  const onChangeUserId = (e) => {
+    setUserId(e.target.value);
+  }; 
+
+  const onChangeUserPhoto = (e) => {
+    setUserPhoto(e.target.value);
   }; 
 
   return (
     <div className="profile">
-      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} className="google"/>
+      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
       <div className="user-input">
         <span>Email</span>
         <form className="user-input" onSubmit={(e) => onSubmit(e, myContext)}>
           <textarea
             className="profile-input"
-            onChange={(e) => onChangeUserName(e)}
+            onChange={(e) => onChangeEmail(e)}
             required
           />
-          <span className="password">Password</span>
+          <span>Password</span>
           <textarea 
           className="profile-input"
           onChange={(e) => onChangePassWord(e)} 
@@ -58,22 +74,19 @@ const SignUp = (props) => {
           <span>User Name</span>
           <textarea
             className="profile-input"
-            // onChange={(e) => onChangeUserName(e)}
-            // value={itemChangeText}
+            onChange={(e) => onChangeUserName(e)}
             required
           />
           <span>User ID</span>
           <textarea
             className="profile-input"
-            // onChange={(e) => onChangeUserName(e)}
-            // value={itemChangeText}
+            onChange={(e) => onChangeUserId(e)}
             required
           />
           <span>Photo URL</span>
           <textarea
             className="profile-input"
-            // onChange={(e) => onChangeUserName(e)}
-            // value={itemChangeText}
+            onChange={(e) => onChangeUserPhoto(e)}
             required
           />
           <button type="submit">Sign Up</button>

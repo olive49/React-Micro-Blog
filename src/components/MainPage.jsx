@@ -47,7 +47,7 @@ const MainPage = (props) => {
       <CreateTweet
         onNewTweet={(newTweet) => handleNewTweet(newTweet)}
         loading={loading}
-        userName={myContext.currentUser.displayName}
+        userName={myContext.currentUser ? myContext.currentUser.displayName : ""}
       />
       <div
         style={{

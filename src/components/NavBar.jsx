@@ -50,7 +50,7 @@ const NavBar = () => {
             Sign Up
           </li>
         </Link>
-        <Link style={navStyle} to="/updateprofile">
+        {/* <Link style={navStyle} to="/updateprofile">
           <li
             style={{
               color:
@@ -59,7 +59,7 @@ const NavBar = () => {
           >
             Update Profile
           </li>
-        </Link>
+        </Link> */}
       </ul>
     </nav>
   );

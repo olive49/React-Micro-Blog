@@ -6,6 +6,7 @@ import TweetsContext from "../TweetsContext.js";
 const Tweet = (props) => {
   const { tweet } = props;
   const myContext = useContext(TweetsContext)
+  console.log(myContext)
 
   return (
         <div>

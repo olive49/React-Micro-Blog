@@ -3,13 +3,13 @@ import "./App.css";
 import MainPage from "./components/MainPage.jsx";
 import ProfilePage from "./components/ProfilePage.jsx";
 import NavBar from "./components/NavBar.jsx";
-import UpdateProfile from "./components/UpdateProfile.jsx"
+import UpdateProfile from "./components/UpdateProfile.jsx";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import TweetsContext from "./TweetsContext";
 import SignUp from "./components/SignUp.jsx";
-import firebase from "firebase"
-import "firebase/auth"
-import "firebase/firestore"
+import firebase from "firebase";
+import "firebase/auth";
+import "firebase/firestore";
 
 const config = {
   apiKey: process.env.REACT_APP_FIRESTORE_API_KEY,
@@ -25,33 +25,37 @@ const auth = firebase.auth();
 const App = () => {
   const db = firebase.firestore();
 
-  const [usersArray, setUsersArray] = useState([]);
+  // const [usersArray, setUsersArray] = useState([]);
   const [userName, setUserName] = useState("");
   const [passWord, setPassWord] = useState("");
   const [signIn, setSignIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null)
+  const [currentUser, setCurrentUser] = useState(null);
+  const [userEmail, setUserEmail] = useState(null);
+  const [userPassWord, setUserPassWord] = useState(null);
+  const [userUserName, setUserUserName] = useState(null);
+  const [userId, setUserId] = useState(null);;
+  const [userPhoto, setUserPhoto] = useState(null);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
-        setCurrentUser(null)
+        setCurrentUser(null);
       } else {
-        setCurrentUser({ 
-          id: user.id, 
-          displayName: user.message + '', 
-          imageUrl: user.photo + '',
-        })
+        console.log(user)
+        setCurrentUser({
+          id: user.id,
+          displayName: user.message + "",
+          imageUrl: user.photo + "",
+        });
       }
-    })
-  }, [])
-
-
+    });
+  }, [currentUser] );
 
   const handleNewUserName = (newUserName, newPassWord) => {
-    const promise = auth.createUserWithEmailAndPassword(
-      newUserName,
-      newPassWord
-    ).then(alert(`Welcome to Tweeter, ${newUserName}!`))
+    const promise = auth
+      .createUserWithEmailAndPassword(newUserName, newPassWord)
+      .then(alert(`Welcome to Tweeter, ${newUserName}!`));
+    // handlePersistUser(userUserName, userId, userPhoto)
     promise.catch((e) => {
       if (
         e.message === "The email address is already in use by another account."
@@ -63,19 +67,39 @@ const App = () => {
     });
   };
 
-    // const userArray = [];
-    // db.collection("users")
-    //   .get()
-    //   .then((querySnapshot) => {
-    //     querySnapshot.forEach((doc) => {
-    //       const { newUserName } = doc.data();
-    //       userArray.push(newUserName);
-    //     });
-    //     setUsersArray(userArray);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error: ", error);
-    //   });
+  const handlePersistUser = (userUserName, userId, userPhoto) => {
+    setCurrentUser({
+      displayName: userUserName,
+      id: userId,
+      imageUrl: userPhoto,
+    })
+    db.collection("users")
+      .add({
+        displayName: userUserName,
+        id: userId,
+        imageUrl: userPhoto,
+      })
+      .then((docRef) => {
+        console.log("Document was written with User ID ", docRef.id);
+      })
+      .catch((error) => {
+        console.error(`Error added user: ${userUserName} `, error);
+      });
+  };
+
+  // const userArray = [];
+  // db.collection("users")
+  //   .get()
+  //   .then((querySnapshot) => {
+  //     querySnapshot.forEach((doc) => {
+  //       const { newUserName } = doc.data();
+  //       userArray.push(newUserName);
+  //     });
+  //     setUsersArray(userArray);
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error: ", error);
+  //   });
 
   const handleLogin = (userName, passWord) => {
     const promise = auth.signInWithEmailAndPassword(userName, passWord);
@@ -88,30 +112,14 @@ const App = () => {
     firebase.auth().signOut();
   };
 
-  const handleUpdateInfo = (userDisplayName, photo) => {
-    const user = firebase.auth().currentUser;
-
-    user
-      .updateProfile({
-        displayName: userDisplayName,
-        photoURL: photo,
-      })
-      .then(function () {
-        // Update successful.
-      })
-      .catch(function (error) {
-        // An error happened.
-      });
-  };
 
   return (
     <TweetsContext.Provider
-      value={{ 
-        // userName, 
-        // usersArray, 
-        currentUser, 
+      value={{
+        currentUser,
         setCurrentUser,
-       }}
+        logout: () => setCurrentUser(null),
+      }}
     >
       <div>
         <Router>
@@ -135,19 +143,19 @@ const App = () => {
                 <Route path="/signup" exact>
                   <SignUp
                     userName={userName}
-                    onNewUserName={(newUserName, newPassWord) =>
-                      handleNewUserName(newUserName, newPassWord)
+                    onNewUserName={(newUserName, newPassWord, userUserName, userId, userPhoto) =>
+                      handleNewUserName(newUserName, newPassWord, userUserName, userId, userPhoto)
                     }
-                    onUpdateInfo={(userDisplayName, photo) =>
-                      handleUpdateInfo(userDisplayName, photo)
+                    onPersistNewUser={(userUserName, userId, userPhoto) =>
+                      handlePersistUser(userUserName, userId, userPhoto)
                     }
                   />
                 </Route>
-                <Route path="/updateprofile" exact>
+                {/* <Route path="/updateprofile" exact>
                   <UpdateProfile
                     userName={userName}
                   />
-                </Route>
+                </Route> */}
               </div>
             </Switch>
           </div>
