@@ -50,16 +50,6 @@ const NavBar = () => {
             Sign Up
           </li>
         </Link>
-        {/* <Link style={navStyle} to="/updateprofile">
-          <li
-            style={{
-              color:
-                page == "/updateprofile" ? "white" : "rgba(255, 255, 255, 0.5)",
-            }}
-          >
-            Update Profile
-          </li>
-        </Link> */}
       </ul>
     </nav>
   );

@@ -14,7 +14,8 @@ const MainPage = (props) => {
   const handleNewTweet = (newTweet) => {
     const newTweets = [newTweet, ...tweets];
     setTweets(newTweets);
-    props.db.collection("tweets")
+    props.db
+      .collection("tweets")
       .add({
         newTweet,
       })
@@ -27,9 +28,10 @@ const MainPage = (props) => {
   };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     const tweetsArray = [];
-    props.db.collection("tweets")
+    props.db
+      .collection("tweets")
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -37,9 +39,9 @@ const MainPage = (props) => {
           tweetsArray.push(newTweet);
         });
         const sorted = tweetsArray.sort((a, b) => {
-          return new Date(b.date) - new Date(a.date)
-        })
-        setLoading(false)
+          return new Date(b.date) - new Date(a.date);
+        });
+        setLoading(false);
         setTweets(sorted);
       })
       .catch((error) => {
@@ -52,7 +54,9 @@ const MainPage = (props) => {
       <CreateTweet
         onNewTweet={(newTweet) => handleNewTweet(newTweet)}
         loading={loading}
-        userName={myContext.currentUser ? myContext.currentUser.displayName : ""}
+        userName={
+          myContext.currentUser ? myContext.currentUser.displayName : ""
+        }
       />
       <div
         style={{

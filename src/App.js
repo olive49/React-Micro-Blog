@@ -39,7 +39,6 @@ const App = () => {
     if (!user) {
       setCurrentUser(null);
     } else {
-      console.log(user.email);
       db.collection("users")
         .get()
         .then((querySnapshot) => {
@@ -97,6 +96,7 @@ const App = () => {
     promise.then(setUserEmail(userName));
     promise.then(setSignedIn(true));
     promise.catch((e) => console.error(e.message));
+    alert(`Welcome back, ${userName}!`);
   };
 
   const handleLogOut = () => {
@@ -109,7 +109,6 @@ const App = () => {
       value={{
         currentUser,
         setCurrentUser,
-        logout: () => setCurrentUser(null),
       }}
     >
       <div>

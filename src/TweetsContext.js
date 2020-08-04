@@ -1,11 +1,8 @@
-import { createContext }from 'react';
+import { createContext } from "react";
 
 const TweetsContext = createContext({
-    // userName: '',
-    // usersArray: [],
-    currentUser: null,
-    setCurrentUser: () => {},
-    logout: () => {},
-})
+  currentUser: null,
+  setCurrentUser: () => {},
+});
 
-export default TweetsContext
+export default TweetsContext;
