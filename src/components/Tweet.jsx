@@ -23,7 +23,7 @@ const Tweet = (props) => {
               <div className="tweet-card-header">
                 <span>{tweet.userName}</span>
                 <span>{tweet.date}</span>
-                <img src={myContext.currentUser && myContext.currentUser.imageUrl} style={{width: "15%", borderRadius: "50%"}}></img>
+                <img src={tweet.photo} style={{width: "10%", borderRadius: "50%"}}></img>
               </div>
               <CardContent className="tweet-content">{tweet.content}</CardContent>
             </Card>

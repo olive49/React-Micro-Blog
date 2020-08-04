@@ -21,7 +21,7 @@ const CreateTweet = (props) => {
       userName: myContext.currentUser ? myContext.currentUser.displayName : "",
       date: new Date().toISOString(),
       id: Date.now(),
-      photo: myContext.currentUser ? myContext.currentUser.imageUrl : "",
+      photo: myContext.currentUser ? myContext.currentUser.imageUrl + "" : "",
     });
     setNewTweet("")
   }

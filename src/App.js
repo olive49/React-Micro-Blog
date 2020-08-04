@@ -3,7 +3,12 @@ import "./App.css";
 import MainPage from "./components/MainPage.jsx";
 import ProfilePage from "./components/ProfilePage.jsx";
 import NavBar from "./components/NavBar.jsx";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import TweetsContext from "./TweetsContext";
 import SignUp from "./components/SignUp.jsx";
 import firebase from "firebase";
@@ -25,41 +30,42 @@ const App = () => {
   const db = firebase.firestore();
 
   const [userName] = useState("");
-  const [signIn, setSignIn] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
 
-
   useEffect(() => {
-    const user = firebase.auth().currentUser
-      if (!user) {
-        setCurrentUser(null);
-      } else {
-        console.log(user.email)
-        db.collection("users")
-          .get()
-          .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              const { id, displayName, imageUrl } = doc.data();
-              if (id === user.email) {
-                setCurrentUser({
-                  id,
-                  displayName,
-                  imageUrl,
-                });
-              }
-                });
-              })
-              .catch((error) => {
-                console.error("Error: ", error);
+    const user = firebase.auth().currentUser;
+    if (!user) {
+      setCurrentUser(null);
+    } else {
+      console.log(user.email);
+      db.collection("users")
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const { id, displayName, imageUrl } = doc.data();
+            if (id === user.email) {
+              setCurrentUser({
+                id,
+                displayName,
+                imageUrl,
               });
-      }
-    }, [userEmail] )
+            }
+          });
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+        });
+    }
+  }, [userEmail]);
 
   const handleNewUserName = (newUserName, newPassWord) => {
     const promise = auth
       .createUserWithEmailAndPassword(newUserName, newPassWord)
-      .then(alert(`Welcome to Tweeter, ${newUserName}! Please log in to continue`));
+      .then(
+        alert(`Welcome to Tweeter, ${newUserName}! Please log in to continue`)
+      );
     promise.catch((e) => {
       if (
         e.message === "The email address is already in use by another account."
@@ -86,15 +92,15 @@ const App = () => {
       });
   };
 
-  const handleLogin = (userName, passWord, ) => {
+  const handleLogin = (userName, passWord) => {
     const promise = auth.signInWithEmailAndPassword(userName, passWord);
-    promise.then(setUserEmail(userName))
-    promise.then(setSignIn(true));
+    promise.then(setUserEmail(userName));
+    promise.then(setSignedIn(true));
     promise.catch((e) => console.error(e.message));
   };
 
   const handleLogOut = () => {
-    setSignIn(false);
+    setSignedIn(false);
     firebase.auth().signOut();
   };
 
@@ -112,9 +118,17 @@ const App = () => {
             <NavBar />
             <Switch>
               <div className="App">
-                <Route path="/home" exact>
-                  <MainPage userName={userName} db={db} />
-                </Route>
+                <Route
+                  path="/home"
+                  exact
+                  render={() =>
+                    signedIn ? (
+                      <MainPage userName={userName} db={db} />
+                    ) : (
+                      <Redirect to="/profile" />
+                    )
+                  }
+                ></Route>
                 <Route path="/profile" exact>
                   <ProfilePage
                     userName={userName}
@@ -122,7 +136,7 @@ const App = () => {
                       handleLogin(userName, passWord)
                     }
                     onLogOut={() => handleLogOut()}
-                    signIn={signIn}
+                    signedIn={signedIn}
                   />
                 </Route>
                 <Route path="/signup" exact>
