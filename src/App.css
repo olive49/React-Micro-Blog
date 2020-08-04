@@ -22,6 +22,10 @@ li {
   font-size: 1.2rem;
 }
 
+.tweet-content {
+  text-align: start;
+}
+
 .text-field{
   font-size: 1.2rem;
   background-color: black;
