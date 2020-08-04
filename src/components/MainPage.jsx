@@ -35,7 +35,10 @@ const MainPage = (props) => {
           const { newTweet } = doc.data();
           tweetsArray.push(newTweet);
         });
-        setTweets(tweetsArray);
+        const sorted = tweetsArray.sort((a, b) => {
+          return new Date(b.date) - new Date(a.date)
+        })
+        setTweets(sorted);
       })
       .catch((error) => {
         console.error("Error: ", error);

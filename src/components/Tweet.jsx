@@ -1,4 +1,4 @@
-import React, { Component, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import TweetsContext from "../TweetsContext.js";
@@ -6,7 +6,7 @@ import TweetsContext from "../TweetsContext.js";
 const Tweet = (props) => {
   const { tweet } = props;
   const myContext = useContext(TweetsContext)
-  console.log(myContext)
+  
 
   return (
         <div>

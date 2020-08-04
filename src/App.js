@@ -41,7 +41,6 @@ const App = () => {
       if (!user) {
         setCurrentUser(null);
       } else {
-        console.log(user)
         setCurrentUser({
           id: user.id,
           displayName: user.message + "",
@@ -151,11 +150,6 @@ const App = () => {
                     }
                   />
                 </Route>
-                {/* <Route path="/updateprofile" exact>
-                  <UpdateProfile
-                    userName={userName}
-                  />
-                </Route> */}
               </div>
             </Switch>
           </div>
